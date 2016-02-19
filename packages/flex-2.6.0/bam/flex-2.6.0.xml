@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageDefinition xsi:schemaLocation="http://www.buildamation.com ./Schema/BamPackageDefinitionV1.xsd" name="flex" version="2.6.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.buildamation.com">
   <Description>A new package called flex with version 2.6.0</Description>
+  <Dependents>
+    <Package name="C" />
+    <Package name="Clang" version="Xcode6" />
+    <Package name="NativeBuilder" />
+  </Dependents>
   <BamAssemblies>
     <BamAssembly name="Bam.Core" major="1" minor="0" patch="1" />
   </BamAssemblies>
