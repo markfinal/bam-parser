@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageDefinition xsi:schemaLocation="http://www.buildamation.com ./Schema/BamPackageDefinitionV1.xsd" name="regex" version="2.7" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.buildamation.com">
   <Description>A new package called regex with version 2.7</Description>
+  <Dependents>
+    <Package name="C" />
+    <Package name="NativeBuilder" />
+    <Package name="VisualC" version="12.0" />
+    <Package name="VSSolutionBuilder" />
+  </Dependents>
   <BamAssemblies>
     <BamAssembly name="Bam.Core" major="1" minor="0" patch="1" />
   </BamAssemblies>
