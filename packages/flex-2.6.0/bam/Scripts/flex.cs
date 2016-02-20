@@ -20,7 +20,28 @@ namespace flex
                     compiler.PreprocessorDefines.Add("HAVE_LIMITS_H");
                     compiler.PreprocessorDefines.Add("VERSION", "\"2.6.0\"");
                     compiler.PreprocessorDefines.Add("M4", "m4");
+                    if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
+                    {
+                        compiler.DisableWarnings.AddUnique("4113"); // annoying
+                        compiler.PreprocessorDefines.Add("YY_NO_UNISTD_H");
+                        compiler.PreprocessorDefines.Add("snprintf", "_snprintf");
+                    }
+                    else
+                    {
+                    }
                 });
+
+            if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
+            {
+                this.CompileAndLinkAgainst<regex.regex>(source);
+                this.LinkAgainst<WindowsSDK.WindowsSDK>();
+
+                this.PrivatePatch(settings =>
+                    {
+                        var linker = settings as C.ICommonLinkerSettings;
+                        linker.Libraries.AddUnique("Ws2_32.lib");
+                    });
+            }
         }
     }
 }
