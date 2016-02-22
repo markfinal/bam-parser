@@ -37,6 +37,7 @@ namespace bison.DefaultSettings
             this IBisonSettings settings,
             Bam.Core.Module module)
         {
+            settings.Prefix = null;
         }
 
         public static void

@@ -47,5 +47,11 @@ namespace bison
         {
             (this as IBisonSettings).Convert(commandLine);
         }
+
+        Bam.Core.TokenizedString IBisonSettings.Prefix
+        {
+            get;
+            set;
+        }
     }
 }

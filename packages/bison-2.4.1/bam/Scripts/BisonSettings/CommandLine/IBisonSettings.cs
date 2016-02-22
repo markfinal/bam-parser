@@ -37,6 +37,10 @@ namespace bison
             this IBisonSettings settings,
             Bam.Core.StringArray commandLine)
         {
+            if (null != settings.Prefix)
+            {
+                commandLine.Add(System.String.Format("-p{0}", settings.Prefix.Parse()));
+            }
         }
     }
 }

@@ -47,5 +47,11 @@ namespace flex
         {
             (this as IFlexSettings).Convert(commandLine);
         }
+
+        TokenizedString IFlexSettings.Prefix
+        {
+            get;
+            set;
+        }
     }
 }

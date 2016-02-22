@@ -34,5 +34,10 @@ namespace flex
     interface IFlexSettings :
         Bam.Core.ISettingsBase
     {
+        Bam.Core.TokenizedString Prefix
+        {
+            get;
+            set;
+        }
     }
 }

@@ -34,5 +34,10 @@ namespace bison
     interface IBisonSettings :
         Bam.Core.ISettingsBase
     {
+        Bam.Core.TokenizedString Prefix
+        {
+            get;
+            set;
+        }
     }
 }

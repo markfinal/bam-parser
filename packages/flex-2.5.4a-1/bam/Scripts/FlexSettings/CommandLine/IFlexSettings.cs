@@ -37,6 +37,10 @@ namespace flex
             this IFlexSettings settings,
             Bam.Core.StringArray commandLine)
         {
+            if (settings.Prefix != null)
+            {
+                commandLine.AddUnique(System.String.Format("-P{0}", settings.Prefix.Parse()));
+            }
         }
     }
 }
