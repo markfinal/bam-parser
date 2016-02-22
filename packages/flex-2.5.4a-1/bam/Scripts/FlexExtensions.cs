@@ -35,7 +35,8 @@ namespace flex.FlexExtension
         public static System.Tuple<Bam.Core.Module, Bam.Core.Module>
         FlexHeader(
             this C.Cxx.ObjectFileCollection collection,
-            C.HeaderFile header)
+            C.HeaderFile header,
+            Bam.Core.TokenizedString moduleName)
         {
             // flex the header file to generate the source file
             var flexSourceFile = Bam.Core.Module.Create<FlexGeneratedSource>(collection);
@@ -60,6 +61,9 @@ namespace flex.FlexExtension
                         compiler.IncludePaths.AddUnique(collection.CreateTokenizedString("$(0)/include", flexTool.Macros["packagedir"]));
                     });
             }
+
+            // set the module name before the SourceHeader, in order to fix the output path
+            flexSourceFile.ModuleName = moduleName;
 
             // set the source header AFTER the source has been chained into the object file
             // so that the encapsulating module can be determined
