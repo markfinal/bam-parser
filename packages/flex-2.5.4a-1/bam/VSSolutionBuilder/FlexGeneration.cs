@@ -28,31 +28,41 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion // License
 using Bam.Core;
-namespace bison
+namespace flex
 {
-    public sealed class NativeBisonGeneration :
-        IBisonGenerationPolicy
+    public sealed class VSSolutionFlexGeneration :
+        IFlexGenerationPolicy
     {
         void
-        IBisonGenerationPolicy.Bison(
-            BisonGeneratedSource sender,
+        IFlexGenerationPolicy.Flex(
+            FlexGeneratedSource sender,
             Bam.Core.ExecutionContext context,
-            Bam.Core.ICommandLineTool bisonCompiler,
-            Bam.Core.TokenizedString generatedYaccSource,
+            Bam.Core.ICommandLineTool flexCompiler,
+            Bam.Core.TokenizedString generatedFlexSource,
             C.HeaderFile source)
         {
-            var bisonOutputPath = generatedYaccSource.Parse();
-            var bisonOutputDir = System.IO.Path.GetDirectoryName(bisonOutputPath);
-            if (!System.IO.Directory.Exists(bisonOutputDir))
-            {
-                System.IO.Directory.CreateDirectory(bisonOutputDir);
-            }
+            var encapsulating = sender.GetEncapsulatingReferencedModule();
+
+            var solution = Bam.Core.Graph.Instance.MetaData as VSSolutionBuilder.VSSolution;
+            var project = solution.EnsureProjectExists(encapsulating);
+            var config = project.GetConfiguration(encapsulating);
+
+            var output = generatedFlexSource.Parse();
+
+            var commands = new Bam.Core.StringArray();
+            commands.Add(System.String.Format("IF NOT EXIST {0} MKDIR {0}", sender.CreateTokenizedString("@dir($(0))", generatedFlexSource).Parse()));
 
             var args = new Bam.Core.StringArray();
+            args.Add(CommandLineProcessor.Processor.StringifyTool(flexCompiler));
             (sender.Settings as CommandLineProcessor.IConvertToCommandLine).Convert(args);
-            args.Add(System.String.Format("-o{0}", bisonOutputPath));
-            args.Add(source.InputPath.Parse());
-            CommandLineProcessor.Processor.Execute(context, bisonCompiler, args);
+            args.Add(System.String.Format("-o{0}", output));
+            args.Add("%(FullPath)");
+            commands.Add(args.ToString(' '));
+
+            var customBuild = config.GetSettingsGroup(VSSolutionBuilder.VSSettingsGroup.ESettingsGroup.CustomBuild, include: source.InputPath, uniqueToProject: true);
+            customBuild.AddSetting("Command", commands.ToString(System.Environment.NewLine), condition: config.ConditionText);
+            customBuild.AddSetting("Message", System.String.Format("Flex'ing {0} into {1}", System.IO.Path.GetFileName(source.InputPath.Parse()), output), condition: config.ConditionText);
+            customBuild.AddSetting("Outputs", output, condition: config.ConditionText);
         }
     }
 }
