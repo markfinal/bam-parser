@@ -33,6 +33,8 @@ namespace bison
     class BisonTool :
         Bam.Core.PreBuiltTool
     {
+        private Bam.Core.TokenizedStringArray arguments = new Bam.Core.TokenizedStringArray();
+
         protected override void
         Init(
             Bam.Core.Module parent)
@@ -41,7 +43,14 @@ namespace bison
 
             if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
             {
+                // for dlls, e.g. libintl.dll
                 this.EnvironmentVariables.Add("PATH", new TokenizedStringArray(this.CreateTokenizedString("$(packagedir)/bin")));
+            }
+            else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
+            {
+                var clangMeta = Bam.Core.Graph.Instance.PackageMetaData<Clang.MetaData>("Clang");
+                this.arguments.Add(Bam.Core.TokenizedString.CreateVerbatim(System.String.Format("--sdk {0}", clangMeta.SDK)));
+                this.arguments.Add("bison");
             }
         }
 
@@ -59,8 +68,20 @@ namespace bison
                 {
                     return this.CreateTokenizedString("$(packagedir)/bin/bison.exe");
                 }
+                else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
+                {
+                    return Bam.Core.TokenizedString.CreateVerbatim("xcrun");
+                }
 
                 throw new Bam.Core.Exception("bison unsupported on this platform");
+            }
+        }
+
+        public override TokenizedStringArray InitialArguments
+        {
+            get
+            {
+                return this.arguments;
             }
         }
     }

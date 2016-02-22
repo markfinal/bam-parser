@@ -33,6 +33,21 @@ namespace flex
     class FlexTool :
         Bam.Core.PreBuiltTool
     {
+        private Bam.Core.TokenizedStringArray arguments = new Bam.Core.TokenizedStringArray();
+
+        protected override void
+        Init(
+            Bam.Core.Module parent)
+        {
+            base.Init(parent);
+            if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
+            {
+                var clangMeta = Bam.Core.Graph.Instance.PackageMetaData<Clang.MetaData>("Clang");
+                this.arguments.Add(Bam.Core.TokenizedString.CreateVerbatim(System.String.Format("--sdk {0}", clangMeta.SDK)));
+                this.arguments.Add("flex");
+            }
+        }
+
         public override Bam.Core.Settings
         CreateDefaultSettings<T>(T module)
         {
@@ -47,8 +62,20 @@ namespace flex
                 {
                     return this.CreateTokenizedString("$(packagedir)/bin/flex.exe");
                 }
+                else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
+                {
+                    return Bam.Core.TokenizedString.CreateVerbatim("xcrun");
+                }
 
                 throw new Bam.Core.Exception("flex unsupported on this platform");
+            }
+        }
+
+        public override TokenizedStringArray InitialArguments
+        {
+            get
+            {
+                return this.arguments;
             }
         }
     }
