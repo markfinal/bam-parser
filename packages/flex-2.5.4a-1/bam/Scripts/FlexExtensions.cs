@@ -42,6 +42,24 @@ namespace flex.FlexExtension
 
             // compile the generated source file
             var objFile = collection.AddFile(flexSourceFile);
+            objFile.PerformCompilation = false;
+
+            collection.PrivatePatch(settings =>
+                {
+                    var compiler = settings as C.ICommonCompilerSettings;
+                    compiler.IncludePaths.AddUnique(collection.CreateTokenizedString("@dir($(0))", objFile.GeneratedPaths[C.ObjectFile.Key]));
+                });
+
+            if (collection.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
+            {
+                // for unistd.h
+                var flexTool = Bam.Core.Graph.Instance.FindReferencedModule<flex.FlexTool>();
+                collection.PrivatePatch(settings =>
+                    {
+                        var compiler = settings as C.ICommonCompilerSettings;
+                        compiler.IncludePaths.AddUnique(collection.CreateTokenizedString("$(0)/include", flexTool.Macros["packagedir"]));
+                    });
+            }
 
             // set the source header AFTER the source has been chained into the object file
             // so that the encapsulating module can be determined
