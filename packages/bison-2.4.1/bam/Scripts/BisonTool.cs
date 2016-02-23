@@ -72,6 +72,15 @@ namespace bison
                 {
                     return Bam.Core.TokenizedString.CreateVerbatim("xcrun");
                 }
+                else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
+                {
+                    var flexLocation = GccCommon.ConfigureUtilities.RunExecutable("which", "bison");
+                    if (null == flexLocation)
+                    {
+                        throw new Bam.Core.Exception("bison could not be found");
+                    }
+                    return Bam.Core.TokenizedString.CreateVerbatim(flexLocation);
+                }
 
                 throw new Bam.Core.Exception("bison unsupported on this platform");
             }

@@ -66,6 +66,15 @@ namespace flex
                 {
                     return Bam.Core.TokenizedString.CreateVerbatim("xcrun");
                 }
+                else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
+                {
+                    var flexLocation = GccCommon.ConfigureUtilities.RunExecutable("which", "flex");
+                    if (null == flexLocation)
+                    {
+                        throw new Bam.Core.Exception("flex could not be found");
+                    }
+                    return Bam.Core.TokenizedString.CreateVerbatim(flexLocation);
+                }
 
                 throw new Bam.Core.Exception("flex unsupported on this platform");
             }
