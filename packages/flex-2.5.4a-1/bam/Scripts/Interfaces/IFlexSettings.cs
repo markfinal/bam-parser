@@ -39,5 +39,11 @@ namespace flex
             get;
             set;
         }
+
+        bool Debug
+        {
+            get;
+            set;
+        }
     }
 }

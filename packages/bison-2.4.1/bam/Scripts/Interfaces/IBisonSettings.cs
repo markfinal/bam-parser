@@ -39,5 +39,11 @@ namespace bison
             get;
             set;
         }
+
+        bool Debug
+        {
+            get;
+            set;
+        }
     }
 }

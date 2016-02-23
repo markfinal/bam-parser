@@ -38,12 +38,7 @@ namespace flex.DefaultSettings
             Bam.Core.Module module)
         {
             settings.Prefix = null;
-        }
-
-        public static void
-        Empty(
-            this IFlexSettings settings)
-        {
+            settings.Debug = false;
         }
     }
 }

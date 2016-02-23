@@ -48,7 +48,13 @@ namespace flex
             (this as IFlexSettings).Convert(commandLine);
         }
 
-        TokenizedString IFlexSettings.Prefix
+        Bam.Core.TokenizedString IFlexSettings.Prefix
+        {
+            get;
+            set;
+        }
+
+        bool IFlexSettings.Debug
         {
             get;
             set;

@@ -53,5 +53,11 @@ namespace bison
             get;
             set;
         }
+
+        bool IBisonSettings.Debug
+        {
+            get;
+            set;
+        }
     }
 }

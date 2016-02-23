@@ -38,12 +38,7 @@ namespace bison.DefaultSettings
             Bam.Core.Module module)
         {
             settings.Prefix = null;
-        }
-
-        public static void
-        Empty(
-            this IBisonSettings settings)
-        {
+            settings.Debug = false;
         }
     }
 }

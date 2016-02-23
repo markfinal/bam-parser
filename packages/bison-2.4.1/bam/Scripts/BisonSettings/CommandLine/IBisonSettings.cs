@@ -41,6 +41,10 @@ namespace bison
             {
                 commandLine.Add(System.String.Format("-p{0}", settings.Prefix.Parse()));
             }
+            if (settings.Debug)
+            {
+                commandLine.Add("--debug");
+            }
         }
     }
 }

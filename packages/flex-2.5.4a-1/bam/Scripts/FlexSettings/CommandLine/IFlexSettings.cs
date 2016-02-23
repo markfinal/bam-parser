@@ -39,7 +39,11 @@ namespace flex
         {
             if (settings.Prefix != null)
             {
-                commandLine.AddUnique(System.String.Format("-P{0}", settings.Prefix.Parse()));
+                commandLine.Add(System.String.Format("-P{0}", settings.Prefix.Parse()));
+            }
+            if (settings.Debug)
+            {
+                commandLine.Add("--debug");
             }
         }
     }
