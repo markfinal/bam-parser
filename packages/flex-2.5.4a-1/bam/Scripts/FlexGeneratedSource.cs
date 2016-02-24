@@ -63,11 +63,11 @@ namespace flex
                 this.DependsOn(value);
                 if (null != this.ModuleName)
                 {
-                    this.GeneratedPaths[Key].Aliased(this.CreateTokenizedString("$(encapsulatingbuilddir)/$(config)/@dir(@trimstart(@relativeto($(0),$(packagedir)),../))/lex.$(1).cpp", value.GeneratedPaths[C.HeaderFile.Key], this.ModuleName));
+                    this.GeneratedPaths[Key].Aliased(this.CreateTokenizedString("$(encapsulatingbuilddir)/$(encapsulatedparentmodulename)/$(config)/@dir(@trimstart(@relativeto($(0),$(packagedir)),../))/lex.$(1).cpp", value.GeneratedPaths[C.HeaderFile.Key], this.ModuleName));
                 }
                 else
                 {
-                    this.GeneratedPaths[Key].Aliased(this.CreateTokenizedString("$(encapsulatingbuilddir)/$(config)/@dir(@trimstart(@relativeto($(0),$(packagedir)),../))/lex.@changeextension(@basename($(0)),.cpp)", value.GeneratedPaths[C.HeaderFile.Key]));
+                    this.GeneratedPaths[Key].Aliased(this.CreateTokenizedString("$(encapsulatingbuilddir)/$(encapsulatedparentmodulename)/$(config)/@dir(@trimstart(@relativeto($(0),$(packagedir)),../))/lex.@changeextension(@basename($(0)),.cpp)", value.GeneratedPaths[C.HeaderFile.Key]));
                 }
                 this.GetEncapsulatingReferencedModule(); // or the path above won't be parsable prior to all modules having been created
             }
