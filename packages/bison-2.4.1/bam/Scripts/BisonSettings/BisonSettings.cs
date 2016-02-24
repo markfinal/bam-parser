@@ -59,5 +59,11 @@ namespace bison
             get;
             set;
         }
+
+        bool IBisonSettings.InsertLineDirectives
+        {
+            get;
+            set;
+        }
     }
 }

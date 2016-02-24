@@ -45,5 +45,11 @@ namespace bison
             get;
             set;
         }
+
+        bool InsertLineDirectives
+        {
+            get;
+            set;
+        }
     }
 }

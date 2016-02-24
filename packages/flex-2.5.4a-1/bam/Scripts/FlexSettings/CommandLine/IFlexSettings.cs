@@ -45,6 +45,10 @@ namespace flex
             {
                 commandLine.Add("-d"); // rather than --debug for maximum compatibility
             }
+            if (!settings.InsertLineDirectives)
+            {
+                commandLine.Add("-L");
+            }
         }
     }
 }

@@ -59,5 +59,11 @@ namespace flex
             get;
             set;
         }
+
+        bool IFlexSettings.InsertLineDirectives
+        {
+            get;
+            set;
+        }
     }
 }

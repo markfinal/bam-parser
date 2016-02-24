@@ -39,6 +39,7 @@ namespace flex.DefaultSettings
         {
             settings.Prefix = null;
             settings.Debug = false;
+            settings.InsertLineDirectives = true;
         }
     }
 }
