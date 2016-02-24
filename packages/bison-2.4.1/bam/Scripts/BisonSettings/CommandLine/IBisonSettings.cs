@@ -43,7 +43,7 @@ namespace bison
             }
             if (settings.Debug)
             {
-                commandLine.Add("--debug");
+                commandLine.Add("-d"); // rather than --debug for maximum compatibility
             }
         }
     }
