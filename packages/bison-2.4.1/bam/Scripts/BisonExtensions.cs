@@ -47,6 +47,17 @@ namespace bison.BisonExtension
             // so that the encapsulating module can be determined
             bisonSourceFile.SourceHeader = header;
 
+            // on Linux, in C++11 mode, bison defines YY_NULL as nullptr, but flex does it as 0, causing an error
+            // I think it's because bison is newer in Ubuntu (2.7, 3.0.2 is broken as default) than on the other platforms (2.5)
+            if (objFile.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
+            {
+                objFile.PrivatePatch(settings =>
+                    {
+                        var cxxCompiler = settings as C.ICxxOnlyCompilerSettings;
+                        cxxCompiler.LanguageStandard = C.Cxx.ELanguageStandard.Cxx98;
+                    });
+            }
+
             // return both bison'd source, and the compiled object file
             return new System.Tuple<Bam.Core.Module, Bam.Core.Module>(bisonSourceFile, objFile);
         }
