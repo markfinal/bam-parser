@@ -36,14 +36,15 @@ namespace flex.FlexExtension
         FlexHeader(
             this C.Cxx.ObjectFileCollection collection,
             C.HeaderFile header,
-            Bam.Core.TokenizedString moduleName)
+            Bam.Core.TokenizedString moduleName,
+            bool compile)
         {
             // flex the header file to generate the source file
             var flexSourceFile = Bam.Core.Module.Create<FlexGeneratedSource>(collection);
 
             // compile the generated source file
             var objFile = collection.AddFile(flexSourceFile);
-            objFile.PerformCompilation = false;
+            objFile.PerformCompilation = compile;
 
             collection.PrivatePatch(settings =>
                 {
