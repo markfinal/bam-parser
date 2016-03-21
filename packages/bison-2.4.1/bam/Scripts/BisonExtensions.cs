@@ -35,7 +35,8 @@ namespace bison.BisonExtension
         public static System.Tuple<Bam.Core.Module, Bam.Core.Module>
         BisonHeader(
             this C.Cxx.ObjectFileCollection collection,
-            C.HeaderFile header)
+            C.HeaderFile header,
+            Bam.Core.TokenizedString macroDefinitionHeaderPath = null)
         {
             // bison the header file to generate the source file
             var bisonSourceFile = Bam.Core.Module.Create<BisonGeneratedSource>(collection);

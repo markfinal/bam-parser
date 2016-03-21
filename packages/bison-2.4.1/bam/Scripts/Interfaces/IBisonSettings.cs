@@ -51,5 +51,11 @@ namespace bison
             get;
             set;
         }
+
+        Bam.Core.TokenizedString MacroDefinitionHeaderPath
+        {
+            get;
+            set;
+        }
     }
 }

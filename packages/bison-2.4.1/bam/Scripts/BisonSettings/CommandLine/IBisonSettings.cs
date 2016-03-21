@@ -49,6 +49,10 @@ namespace bison
             {
                 commandLine.Add("-l");
             }
+            if (null != settings.MacroDefinitionHeaderPath)
+            {
+                commandLine.Add(System.String.Format("--defines={0}", settings.MacroDefinitionHeaderPath.ParseAndQuoteIfNecessary()));
+            }
         }
     }
 }
