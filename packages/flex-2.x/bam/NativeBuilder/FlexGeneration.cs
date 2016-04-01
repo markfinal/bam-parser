@@ -39,7 +39,7 @@ namespace flex
             Bam.Core.ExecutionContext context,
             Bam.Core.ICommandLineTool flexCompiler,
             Bam.Core.TokenizedString generatedFlexSource,
-            C.HeaderFile source)
+            FlexSourceFile source)
         {
             var flexOutputPath = generatedFlexSource.Parse();
             var flexOutputDir = System.IO.Path.GetDirectoryName(flexOutputPath);

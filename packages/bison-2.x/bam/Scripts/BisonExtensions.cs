@@ -32,24 +32,24 @@ namespace bison.BisonExtension
 {
     public static class BisonExtension
     {
-        public static System.Tuple<Bam.Core.Module, Bam.Core.Module>
-        BisonHeader(
+        public static System.Tuple<BisonGeneratedSource, C.Cxx.ObjectFile>
+        RunBison(
             this C.Cxx.ObjectFileCollection collection,
-            C.HeaderFile header,
+            BisonSourceFile source,
             Bam.Core.TokenizedString macroDefinitionHeaderPath = null)
         {
-            // bison the header file to generate the source file
-            var bisonSourceFile = Bam.Core.Module.Create<BisonGeneratedSource>(collection);
+            // run bison on the bison source file to generate the C++ source file
+            var bisonGeneratedSourceFile = Bam.Core.Module.Create<BisonGeneratedSource>(collection);
 
-            // compile the generated source file
-            var objFile = collection.AddFile(bisonSourceFile);
+            // compile the generated C++ source file
+            var objFile = collection.AddFile(bisonGeneratedSourceFile);
 
-            // set the source header AFTER the source has been chained into the object file
+            // set the bison source file AFTER the generated C++ source has been chained into the object file
             // so that the encapsulating module can be determined
-            bisonSourceFile.SourceHeader = header;
+            bisonGeneratedSourceFile.Source = source;
 
-            // return both bison'd source, and the compiled object file
-            return new System.Tuple<Bam.Core.Module, Bam.Core.Module>(bisonSourceFile, objFile);
+            // return both generated C++ source, and the compiled object file
+            return System.Tuple.Create(bisonGeneratedSourceFile, objFile);
         }
     }
 }

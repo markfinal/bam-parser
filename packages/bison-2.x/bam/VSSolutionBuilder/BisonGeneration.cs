@@ -39,7 +39,7 @@ namespace bison
             Bam.Core.ExecutionContext context,
             Bam.Core.ICommandLineTool bisonCompiler,
             Bam.Core.TokenizedString generatedYaccSource,
-            C.HeaderFile source)
+            BisonSourceFile source)
         {
             var encapsulating = sender.GetEncapsulatingReferencedModule();
 
@@ -76,6 +76,8 @@ namespace bison
             customBuild.AddSetting("Command", commands.ToString(System.Environment.NewLine), condition: config.ConditionText);
             customBuild.AddSetting("Message", System.String.Format("Yacc'ing {0} into {1}", System.IO.Path.GetFileName(source.InputPath.Parse()), output), condition: config.ConditionText);
             customBuild.AddSetting("Outputs", output, condition: config.ConditionText);
+
+            config.AddOtherFile(source);
         }
     }
 }

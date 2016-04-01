@@ -39,7 +39,7 @@ namespace bison
             Bam.Core.ExecutionContext context,
             Bam.Core.ICommandLineTool bisonCompiler,
             Bam.Core.TokenizedString generatedYaccSource,
-            C.HeaderFile source)
+            BisonSourceFile source)
         {
             var bisonOutputPath = generatedYaccSource.Parse();
             var bisonOutputDir = System.IO.Path.GetDirectoryName(bisonOutputPath);

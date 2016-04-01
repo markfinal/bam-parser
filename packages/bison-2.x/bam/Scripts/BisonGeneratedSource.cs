@@ -33,7 +33,7 @@ namespace bison
     public class BisonGeneratedSource :
         C.SourceFile
     {
-        private C.HeaderFile SourceHeaderModule;
+        private BisonSourceFile SourceModule;
         private IBisonGenerationPolicy Policy = null;
 
         protected override void
@@ -45,17 +45,17 @@ namespace bison
             this.Requires(this.Compiler);
         }
 
-        public C.HeaderFile SourceHeader
+        public BisonSourceFile Source
         {
             get
             {
-                return this.SourceHeaderModule;
+                return this.SourceModule;
             }
             set
             {
-                this.SourceHeaderModule = value;
+                this.SourceModule = value;
                 this.DependsOn(value);
-                this.GeneratedPaths[Key].Aliased(this.CreateTokenizedString("$(encapsulatingbuilddir)/$(encapsulatedparentmodulename)/$(config)/@changeextension(@trimstart(@relativeto($(0),$(packagedir)),../),.cpp)", value.GeneratedPaths[C.HeaderFile.Key]));
+                this.GeneratedPaths[Key].Aliased(this.CreateTokenizedString("$(encapsulatingbuilddir)/$(encapsulatedparentmodulename)/$(config)/@changeextension(@trimstart(@relativeto($(0),$(packagedir)),../),.cpp)", value.GeneratedPaths[BisonSourceFile.Key]));
                 this.GetEncapsulatingReferencedModule(); // or the path above won't be parsable prior to all modules having been created
             }
         }
@@ -70,11 +70,11 @@ namespace bison
                 this.ReasonToExecute = Bam.Core.ExecuteReasoning.FileDoesNotExist(this.GeneratedPaths[Key]);
                 return;
             }
-            var sourceFileWriteTime = System.IO.File.GetLastWriteTime(generatedPath);
-            var headerFileWriteTime = System.IO.File.GetLastWriteTime(this.SourceHeaderModule.InputPath.Parse());
-            if (headerFileWriteTime > sourceFileWriteTime)
+            var generatedFileWriteTime = System.IO.File.GetLastWriteTime(generatedPath);
+            var sourceFileWriteTime = System.IO.File.GetLastWriteTime(this.SourceModule.InputPath.Parse());
+            if (sourceFileWriteTime > generatedFileWriteTime)
             {
-                this.ReasonToExecute = Bam.Core.ExecuteReasoning.InputFileNewer(this.GeneratedPaths[Key], this.SourceHeaderModule.InputPath);
+                this.ReasonToExecute = Bam.Core.ExecuteReasoning.InputFileNewer(this.GeneratedPaths[Key], this.SourceModule.InputPath);
                 return;
             }
         }
@@ -83,7 +83,7 @@ namespace bison
         ExecuteInternal(
             Bam.Core.ExecutionContext context)
         {
-            this.Policy.Bison(this, context, this.Compiler, this.GeneratedPaths[Key], this.SourceHeader);
+            this.Policy.Bison(this, context, this.Compiler, this.GeneratedPaths[Key], this.Source);
         }
 
         protected override void

@@ -39,7 +39,7 @@ namespace flex
             Bam.Core.ExecutionContext context,
             Bam.Core.ICommandLineTool flexCompiler,
             Bam.Core.TokenizedString generatedFlexSource,
-            C.HeaderFile source)
+            FlexSourceFile source)
         {
             var encapsulating = sender.GetEncapsulatingReferencedModule();
 
@@ -68,6 +68,8 @@ namespace flex
             commands.Add("fi");
 
             target.AddPreBuildCommands(commands, configuration);
+
+            // TODO: add Flex source to the target
         }
     }
 }

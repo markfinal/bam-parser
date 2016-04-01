@@ -30,14 +30,48 @@
 using Bam.Core;
 namespace bison
 {
-    public interface IBisonGenerationPolicy
+    public class BisonSourceFile :
+        Bam.Core.Module,
+        Bam.Core.IInputPath,
+        Bam.Core.IChildModule
     {
-        void
-        Bison(
-            BisonGeneratedSource sender,
-            Bam.Core.ExecutionContext context,
-            Bam.Core.ICommandLineTool bisonTool,
-            Bam.Core.TokenizedString generatedBisonSource,
-            BisonSourceFile source);
+        static public Bam.Core.PathKey Key = Bam.Core.PathKey.Generate("Bison Source File");
+
+        public override void
+        Evaluate()
+        {
+            this.ReasonToExecute = null;
+        }
+
+        protected override void
+        ExecuteInternal(
+            Bam.Core.ExecutionContext context)
+        {
+        }
+
+        protected override void
+        GetExecutionPolicy(
+            string mode)
+        {
+            // there is no execution policy
+        }
+
+        public Bam.Core.TokenizedString InputPath
+        {
+            get
+            {
+                return this.GeneratedPaths[Key];
+            }
+            set
+            {
+                this.GeneratedPaths[Key] = value;
+            }
+        }
+
+        Bam.Core.Module Bam.Core.IChildModule.Parent
+        {
+            get;
+            set;
+        }
     }
 }

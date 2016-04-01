@@ -39,7 +39,7 @@ namespace flex
             Bam.Core.ExecutionContext context,
             Bam.Core.ICommandLineTool flexCompiler,
             Bam.Core.TokenizedString generatedFlexSource,
-            C.HeaderFile source)
+            FlexSourceFile source)
         {
             var encapsulating = sender.GetEncapsulatingReferencedModule();
 
@@ -63,6 +63,8 @@ namespace flex
             customBuild.AddSetting("Command", commands.ToString(System.Environment.NewLine), condition: config.ConditionText);
             customBuild.AddSetting("Message", System.String.Format("Flex'ing {0} into {1}", System.IO.Path.GetFileName(source.InputPath.Parse()), output), condition: config.ConditionText);
             customBuild.AddSetting("Outputs", output, condition: config.ConditionText);
+
+            config.AddOtherFile(source);
         }
     }
 }

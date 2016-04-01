@@ -39,7 +39,7 @@ namespace bison
             Bam.Core.ExecutionContext context,
             Bam.Core.ICommandLineTool bisonCompiler,
             Bam.Core.TokenizedString generatedYaccSource,
-            C.HeaderFile source)
+            BisonSourceFile source)
         {
             var encapsulating = sender.GetEncapsulatingReferencedModule();
 
@@ -68,6 +68,8 @@ namespace bison
             commands.Add("fi");
 
             target.AddPreBuildCommands(commands, configuration);
+
+            // TODO: add Yacc source to the target
         }
     }
 }

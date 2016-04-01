@@ -32,17 +32,17 @@ namespace flex.FlexExtension
 {
     public static class FlexExtension
     {
-        public static System.Tuple<Bam.Core.Module, Bam.Core.Module>
-        FlexHeader(
+        public static System.Tuple<FlexGeneratedSource, C.Cxx.ObjectFile>
+        RunFlex(
             this C.Cxx.ObjectFileCollection collection,
-            C.HeaderFile header,
+            flex.FlexSourceFile source,
             Bam.Core.TokenizedString moduleName,
             bool compile)
         {
-            // flex the header file to generate the source file
+            // flex the flex source file to generate the C++ source file
             var flexSourceFile = Bam.Core.Module.Create<FlexGeneratedSource>(collection);
 
-            // compile the generated source file
+            // compile the generated C++ source file
             var objFile = collection.AddFile(flexSourceFile);
             objFile.PerformCompilation = compile;
 
@@ -63,15 +63,15 @@ namespace flex.FlexExtension
                     });
             }
 
-            // set the module name before the SourceHeader, in order to fix the output path
+            // set the module name before assigning the Flex source, in order to fix the output path
             flexSourceFile.ModuleName = moduleName;
 
-            // set the source header AFTER the source has been chained into the object file
+            // set the Flex source AFTER the generated C++ source file has been chained into the object file
             // so that the encapsulating module can be determined
-            flexSourceFile.SourceHeader = header;
+            flexSourceFile.Source = source;
 
-            // return both flex'd source, and the compiled object file
-            return new System.Tuple<Bam.Core.Module, Bam.Core.Module>(flexSourceFile, objFile);
+            // return both generated C++ source, and the compiled object file
+            return System.Tuple.Create(flexSourceFile, objFile);
         }
     }
 }
