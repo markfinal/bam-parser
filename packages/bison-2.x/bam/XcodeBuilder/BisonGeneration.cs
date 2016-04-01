@@ -69,7 +69,7 @@ namespace bison
 
             target.AddPreBuildCommands(commands, configuration);
 
-            // TODO: add Yacc source to the target
+            target.EnsureFileOfTypeExists(source.InputPath, XcodeBuilder.FileReference.EFileType.YaccFile);
         }
     }
 }

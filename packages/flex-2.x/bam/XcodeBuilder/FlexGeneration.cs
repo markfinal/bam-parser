@@ -69,7 +69,7 @@ namespace flex
 
             target.AddPreBuildCommands(commands, configuration);
 
-            // TODO: add Flex source to the target
+            target.EnsureFileOfTypeExists(source.InputPath, XcodeBuilder.FileReference.EFileType.LexFile);
         }
     }
 }
