@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PackageDefinition xsi:schemaLocation="http://www.buildamation.com ./Schema/BamPackageDefinitionV1.xsd" name="bison" version="2.4.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.buildamation.com">
-  <Description>A new package called bison with version 2.4.1</Description>
+<PackageDefinition xsi:schemaLocation="http://www.buildamation.com ./Schema/BamPackageDefinitionV1.xsd" name="bison" version="2.x" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.buildamation.com">
+  <Description>Invoke prebuilt bison parser generator for versions 2.x</Description>
   <BamAssemblies>
     <BamAssembly name="Bam.Core" major="1" minor="0" patch="1" />
   </BamAssemblies>
