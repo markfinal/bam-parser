@@ -119,5 +119,40 @@ namespace flex
                 this.Tool = value;
             }
         }
+
+        public Bam.Core.TokenizedString LibrarySearchPath
+        {
+            get
+            {
+                if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
+                {
+                    return this.Compiler.Macros["LibraryPath"];
+                }
+                return null; // indicates system library
+            }
+        }
+
+        public string StandardLibrary
+        {
+            get
+            {
+                if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
+                {
+                    if (this.Compiler is VisualCCommon.CompilerBase)
+                    {
+                        return string.Empty; // the library provided does not link with VisualC, use %option noyywrap
+                    }
+                    else
+                    {
+                        return "-lfl";
+                    }
+                }
+                else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
+                {
+                    return "-ll"; // note libl.a not libfl.a
+                }
+                return "-lfl";
+            }
+        }
     }
 }

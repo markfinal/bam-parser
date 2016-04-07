@@ -46,6 +46,10 @@ namespace flex
                 this.arguments.Add(Bam.Core.TokenizedString.CreateVerbatim(System.String.Format("--sdk {0}", clangMeta.SDK)));
                 this.arguments.Add("flex");
             }
+            else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
+            {
+                this.Macros.Add("LibraryPath", this.CreateTokenizedString("$(packagedir)/lib"));
+            }
         }
 
         public override Bam.Core.Settings
