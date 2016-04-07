@@ -132,27 +132,25 @@ namespace flex
             }
         }
 
-        public string StandardLibrary
+        public string StandardLibrary(
+            C.LinkerTool linker)
         {
-            get
+            if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
             {
-                if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
+                if (linker is VisualCCommon.LinkerBase)
                 {
-                    if (this.Compiler is VisualCCommon.CompilerBase)
-                    {
-                        return string.Empty; // the library provided does not link with VisualC, use %option noyywrap
-                    }
-                    else
-                    {
-                        return "-lfl";
-                    }
+                    return string.Empty; // the library provided does not link with VisualC, use %option noyywrap
                 }
-                else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
+                else
                 {
-                    return "-ll"; // note libl.a not libfl.a
+                    return "-lfl";
                 }
-                return "-lfl";
             }
+            else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
+            {
+                return "-ll"; // note libl.a not libfl.a
+            }
+            return "-lfl";
         }
     }
 }
