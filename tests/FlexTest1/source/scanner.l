@@ -1,3 +1,6 @@
+/* avoid needing to link against libfl.a for yywrap */
+%option noyywrap
+
 /* example from http://flex.sourceforge.net/manual/Simple-Examples.html */
 
         int num_lines = 0, num_chars = 0;
