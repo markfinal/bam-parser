@@ -73,5 +73,33 @@ namespace flex
             get;
             set;
         }
+
+        public Bam.Core.TokenizedString LibrarySearchPath
+        {
+            get
+            {
+                if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
+                {
+                    return this.CreateTokenizedString("$(packagedir)/lib");
+                }
+                return null; // indicates system library
+            }
+        }
+
+        public string StandardLibrary
+        {
+            get
+            {
+                if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
+                {
+                    return "libfl.a";
+                }
+                else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
+                {
+                    return "-ll"; // note libl.a not libfl.a
+                }
+                return "-lfl";
+            }
+        }
     }
 }
