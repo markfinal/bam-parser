@@ -31,7 +31,8 @@ using Bam.Core;
 namespace flex
 {
     public class FlexGeneratedSource :
-        C.SourceFile
+        C.SourceFile,
+        Bam.Core.ICloneModule
     {
         private FlexSourceFile SourceModule;
         private IFlexGenerationPolicy Policy = null;
@@ -151,6 +152,17 @@ namespace flex
                 return "-ll"; // note libl.a not libfl.a
             }
             return "-lfl";
+        }
+
+        Bam.Core.Module
+        ICloneModule.Clone(
+            Bam.Core.Module parent,
+            Bam.Core.Module.PostInitDelegate postInitCB)
+        {
+            var clone = Bam.Core.Module.CloneWithPrivatePatches<FlexGeneratedSource>(this, parent, postInitCallback: postInitCB);
+            clone.ModuleName = this.ModuleName;
+            clone.Source = this.Source;
+            return clone;
         }
     }
 }

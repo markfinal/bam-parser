@@ -31,7 +31,8 @@ using Bam.Core;
 namespace bison
 {
     public class BisonGeneratedSource :
-        C.SourceFile
+        C.SourceFile,
+        Bam.Core.ICloneModule
     {
         private BisonSourceFile SourceModule;
         private IBisonGenerationPolicy Policy = null;
@@ -105,6 +106,16 @@ namespace bison
             {
                 this.Tool = value;
             }
+        }
+
+        Bam.Core.Module
+        ICloneModule.Clone(
+            Bam.Core.Module parent,
+            Bam.Core.Module.PostInitDelegate postInitCB)
+        {
+            var clone = Bam.Core.Module.CloneWithPrivatePatches<BisonGeneratedSource>(this, parent, postInitCallback: postInitCB);
+            clone.Source = this.Source;
+            return clone;
         }
     }
 }
