@@ -30,7 +30,10 @@ Note that the library for Flex (libfl.a) is not compatible with VisualStudio bui
 
 ### Linux
 Prebuilt binaries can be installed from package managers.
+
 Note that on Ubuntu 14, bison 3.0.2 is installed by default, and under testing, was not working as expected. To install an older bison, please follow [the instructions in the accepted answer](http://askubuntu.com/questions/444982/install-bison-2-7-in-ubuntu-14-04).
+
+On Ubuntu 16, bison 3.0.4 is installed, and appears to be working correctly.
 
 ### OSX
 Flex and bison are installed as part of the Xcode command line tools.
