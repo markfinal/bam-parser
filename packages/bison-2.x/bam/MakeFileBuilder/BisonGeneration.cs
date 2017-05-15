@@ -56,7 +56,7 @@ namespace bison
             args.Add(source.InputPath.Parse());
             rule.AddShellCommand(args.ToString(' '));
 
-            meta.CommonMetaData.Directories.AddUnique(bisonOutputDir);
+            meta.CommonMetaData.AddDirectory(bisonOutputDir);
         }
     }
 }

@@ -56,7 +56,7 @@ namespace flex
             args.Add(source.InputPath.Parse());
             rule.AddShellCommand(args.ToString(' '));
 
-            meta.CommonMetaData.Directories.AddUnique(flexOutputDir);
+            meta.CommonMetaData.AddDirectory(flexOutputDir);
         }
     }
 }
