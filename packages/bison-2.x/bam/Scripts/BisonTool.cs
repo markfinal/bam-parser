@@ -74,7 +74,7 @@ namespace bison
                 }
                 else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
                 {
-                    var flexLocation = GccCommon.ConfigureUtilities.RunExecutable("which", "bison");
+                    var flexLocation = Bam.Core.OSUtilities.GetInstallLocation("bison");
                     if (null == flexLocation)
                     {
                         throw new Bam.Core.Exception("bison could not be found");

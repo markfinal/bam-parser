@@ -72,7 +72,7 @@ namespace flex
                 }
                 else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
                 {
-                    var flexLocation = GccCommon.ConfigureUtilities.RunExecutable("which", "flex");
+                    var flexLocation = Bam.Core.OSUtilities.GetInstallLocation("flex");
                     if (null == flexLocation)
                     {
                         throw new Bam.Core.Exception("flex could not be found");
