@@ -70,7 +70,7 @@ namespace bison
                 }
                 else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
                 {
-                    return Bam.Core.TokenizedString.CreateVerbatim("xcrun");
+                    return Bam.Core.TokenizedString.CreateVerbatim(Bam.Core.OSUtilities.GetInstallLocation("xcrun"));
                 }
                 else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
                 {
