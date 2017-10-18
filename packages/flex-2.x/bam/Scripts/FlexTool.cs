@@ -42,13 +42,30 @@ namespace flex
             base.Init(parent);
             if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
             {
+                this.Macros.Add("flexExe", Bam.Core.TokenizedString.CreateVerbatim(Bam.Core.OSUtilities.GetInstallLocation("xcrun")));
+
                 var clangMeta = Bam.Core.Graph.Instance.PackageMetaData<Clang.MetaData>("Clang");
                 this.arguments.Add(Bam.Core.TokenizedString.CreateVerbatim(System.String.Format("--sdk {0}", clangMeta.SDK)));
                 this.arguments.Add("flex");
             }
             else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
             {
+                this.Macros.Add("flexExe", this.CreateTokenizedString("$(packagedir)/bin/flex.exe"));
+
                 this.Macros.Add("LibraryPath", this.CreateTokenizedString("$(packagedir)/lib"));
+            }
+            else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
+            {
+                var flexLocation = Bam.Core.OSUtilities.GetInstallLocation("flex");
+                if (null == flexLocation)
+                {
+                    throw new Bam.Core.Exception("flex could not be found");
+                }
+                this.Macros.Add("flexExe", Bam.Core.TokenizedString.CreateVerbatim(flexLocation));
+            }
+            else
+            {
+                throw new Bam.Core.Exception("flex not supported on this platform");
             }
         }
 
@@ -62,25 +79,7 @@ namespace flex
         {
             get
             {
-                if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
-                {
-                    return this.CreateTokenizedString("$(packagedir)/bin/flex.exe");
-                }
-                else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
-                {
-                    return Bam.Core.TokenizedString.CreateVerbatim(Bam.Core.OSUtilities.GetInstallLocation("xcrun"));
-                }
-                else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
-                {
-                    var flexLocation = Bam.Core.OSUtilities.GetInstallLocation("flex");
-                    if (null == flexLocation)
-                    {
-                        throw new Bam.Core.Exception("flex could not be found");
-                    }
-                    return Bam.Core.TokenizedString.CreateVerbatim(flexLocation);
-                }
-
-                throw new Bam.Core.Exception("flex unsupported on this platform");
+                return this.Macros["flexExe"];
             }
         }
 

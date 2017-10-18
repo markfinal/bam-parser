@@ -46,14 +46,14 @@ namespace flex
             rule.AddTarget(generatedFlexSource);
             rule.AddPrerequisite(source, FlexSourceFile.Key);
 
-            var flexOutputPath = generatedFlexSource.Parse();
+            var flexOutputPath = generatedFlexSource.ToString();
             var flexOutputDir = System.IO.Path.GetDirectoryName(flexOutputPath);
 
             var args = new Bam.Core.StringArray();
             args.Add(CommandLineProcessor.Processor.StringifyTool(flexCompiler));
             (sender.Settings as CommandLineProcessor.IConvertToCommandLine).Convert(args);
             args.Add(System.String.Format("-o{0}", flexOutputPath));
-            args.Add(source.InputPath.Parse());
+            args.Add(source.InputPath.ToString());
             rule.AddShellCommand(args.ToString(' '));
 
             meta.CommonMetaData.AddDirectory(flexOutputDir);

@@ -39,7 +39,7 @@ namespace flex
         {
             if (settings.Prefix != null)
             {
-                commandLine.Add(System.String.Format("-P{0}", settings.Prefix.Parse()));
+                commandLine.Add(System.String.Format("-P{0}", settings.Prefix.ToString()));
             }
             if (settings.Debug)
             {

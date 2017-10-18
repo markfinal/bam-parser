@@ -46,14 +46,14 @@ namespace bison
             rule.AddTarget(generatedYaccSource);
             rule.AddPrerequisite(source, BisonSourceFile.Key);
 
-            var bisonOutputPath = generatedYaccSource.Parse();
+            var bisonOutputPath = generatedYaccSource.ToString();
             var bisonOutputDir = System.IO.Path.GetDirectoryName(bisonOutputPath);
 
             var args = new Bam.Core.StringArray();
             args.Add(CommandLineProcessor.Processor.StringifyTool(bisonCompiler));
             (sender.Settings as CommandLineProcessor.IConvertToCommandLine).Convert(args);
             args.Add(System.String.Format("-o{0}", bisonOutputPath));
-            args.Add(source.InputPath.Parse());
+            args.Add(source.InputPath.ToString());
             rule.AddShellCommand(args.ToString(' '));
 
             meta.CommonMetaData.AddDirectory(bisonOutputDir);

@@ -47,10 +47,12 @@ namespace flex
             var project = solution.EnsureProjectExists(encapsulating);
             var config = project.GetConfiguration(encapsulating);
 
-            var output = generatedFlexSource.Parse();
+            var output = generatedFlexSource.ToString();
 
             var commands = new Bam.Core.StringArray();
-            commands.Add(System.String.Format("IF NOT EXIST {0} MKDIR {0}", sender.CreateTokenizedString("@dir($(0))", generatedFlexSource).Parse()));
+            var dir = sender.CreateTokenizedString("@dir($(0))", generatedFlexSource);
+            dir.Parse();
+            commands.Add(System.String.Format("IF NOT EXIST {0} MKDIR {0}", dir.ToString()));
 
             var args = new Bam.Core.StringArray();
             args.Add(CommandLineProcessor.Processor.StringifyTool(flexCompiler));
@@ -61,7 +63,7 @@ namespace flex
 
             var customBuild = config.GetSettingsGroup(VSSolutionBuilder.VSSettingsGroup.ESettingsGroup.CustomBuild, include: source.InputPath, uniqueToProject: true);
             customBuild.AddSetting("Command", commands.ToString(System.Environment.NewLine), condition: config.ConditionText);
-            customBuild.AddSetting("Message", System.String.Format("Flex'ing {0} into {1}", System.IO.Path.GetFileName(source.InputPath.Parse()), output), condition: config.ConditionText);
+            customBuild.AddSetting("Message", System.String.Format("Flex'ing {0} into {1}", System.IO.Path.GetFileName(source.InputPath.ToString()), output), condition: config.ConditionText);
             customBuild.AddSetting("Outputs", output, condition: config.ConditionText);
 
             config.AddOtherFile(source);

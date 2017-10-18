@@ -43,14 +43,31 @@ namespace bison
 
             if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
             {
+                this.Macros.Add("bisonExe", this.CreateTokenizedString("$(packagedir)/bin/bison.exe"));
+
                 // for dlls, e.g. libintl.dll
                 this.EnvironmentVariables.Add("PATH", new TokenizedStringArray(this.CreateTokenizedString("$(packagedir)/bin")));
             }
             else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
             {
+                this.Macros.Add("bisonExe", Bam.Core.TokenizedString.CreateVerbatim(Bam.Core.OSUtilities.GetInstallLocation("xcrun")));
+
                 var clangMeta = Bam.Core.Graph.Instance.PackageMetaData<Clang.MetaData>("Clang");
                 this.arguments.Add(Bam.Core.TokenizedString.CreateVerbatim(System.String.Format("--sdk {0}", clangMeta.SDK)));
                 this.arguments.Add("bison");
+            }
+            else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
+            {
+                var bisonLocation = Bam.Core.OSUtilities.GetInstallLocation("bison");
+                if (null == bisonLocation)
+                {
+                    throw new Bam.Core.Exception("bison could not be found");
+                }
+                this.Macros.Add("bisonExe", Bam.Core.TokenizedString.CreateVerbatim(bisonLocation));
+            }
+            else
+            {
+                throw new Bam.Core.Exception("bison not supported on this platform");
             }
         }
 
@@ -64,25 +81,7 @@ namespace bison
         {
             get
             {
-                if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
-                {
-                    return this.CreateTokenizedString("$(packagedir)/bin/bison.exe");
-                }
-                else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
-                {
-                    return Bam.Core.TokenizedString.CreateVerbatim(Bam.Core.OSUtilities.GetInstallLocation("xcrun"));
-                }
-                else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
-                {
-                    var flexLocation = Bam.Core.OSUtilities.GetInstallLocation("bison");
-                    if (null == flexLocation)
-                    {
-                        throw new Bam.Core.Exception("bison could not be found");
-                    }
-                    return Bam.Core.TokenizedString.CreateVerbatim(flexLocation);
-                }
-
-                throw new Bam.Core.Exception("bison unsupported on this platform");
+                return this.Macros["bisonExe"];
             }
         }
 

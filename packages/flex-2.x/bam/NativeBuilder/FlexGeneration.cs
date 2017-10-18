@@ -41,7 +41,7 @@ namespace flex
             Bam.Core.TokenizedString generatedFlexSource,
             FlexSourceFile source)
         {
-            var flexOutputPath = generatedFlexSource.Parse();
+            var flexOutputPath = generatedFlexSource.ToString();
             var flexOutputDir = System.IO.Path.GetDirectoryName(flexOutputPath);
             if (!System.IO.Directory.Exists(flexOutputDir))
             {
@@ -51,7 +51,7 @@ namespace flex
             var args = new Bam.Core.StringArray();
             (sender.Settings as CommandLineProcessor.IConvertToCommandLine).Convert(args);
             args.Add(System.String.Format("-o{0}", flexOutputPath));
-            args.Add(source.InputPath.Parse());
+            args.Add(source.InputPath.ToString());
             CommandLineProcessor.Processor.Execute(context, flexCompiler, args);
         }
     }

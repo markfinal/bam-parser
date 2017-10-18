@@ -47,8 +47,8 @@ namespace bison
             var target = workspace.EnsureTargetExists(encapsulating);
             var configuration = target.GetConfiguration(encapsulating);
 
-            var output = generatedYaccSource.Parse();
-            var sourcePath = source.InputPath.Parse();
+            var output = generatedYaccSource.ToString();
+            var sourcePath = source.InputPath.ToString();
 
             var commands = new Bam.Core.StringArray();
             commands.Add(System.String.Format("[[ ! -d {0} ]] && mkdir -p {0}", System.IO.Path.GetDirectoryName(output)));
