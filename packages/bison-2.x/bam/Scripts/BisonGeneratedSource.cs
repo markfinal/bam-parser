@@ -44,6 +44,7 @@ namespace bison
             base.Init(parent);
             this.Compiler = Bam.Core.Graph.Instance.FindReferencedModule<BisonTool>();
             this.Requires(this.Compiler);
+            this.InputPath = this.CreateTokenizedString("$(encapsulatingbuilddir)/$(encapsulatedparentmodulename)/$(config)/@changeextension(@trimstart(@relativeto($(BisonSource),$(packagedir)),../),.cpp)");
         }
 
         public BisonSourceFile Source
@@ -54,9 +55,13 @@ namespace bison
             }
             set
             {
+                if (null != this.SourceModule)
+                {
+                    throw new Bam.Core.Exception("Bison source file has already been assigned");
+                }
                 this.SourceModule = value;
                 this.DependsOn(value);
-                this.GeneratedPaths[Key].Aliased(this.CreateTokenizedString("$(encapsulatingbuilddir)/$(encapsulatedparentmodulename)/$(config)/@changeextension(@trimstart(@relativeto($(0),$(packagedir)),../),.cpp)", value.GeneratedPaths[BisonSourceFile.Key]));
+                this.Macros.Add("BisonSource", value.InputPath);
                 this.GetEncapsulatingReferencedModule(); // or the path above won't be parsable prior to all modules having been created
             }
         }

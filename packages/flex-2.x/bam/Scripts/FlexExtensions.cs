@@ -63,8 +63,11 @@ namespace flex.FlexExtension
                     });
             }
 
-            // set the module name before assigning the Flex source, in order to fix the output path
-            flexSourceFile.ModuleName = moduleName;
+            // override the name of the output file (if null, use the source .l basename)
+            if (null != moduleName)
+            {
+                flexSourceFile.ModuleName = moduleName;
+            }
 
             // set the Flex source AFTER the generated C++ source file has been chained into the object file
             // so that the encapsulating module can be determined
