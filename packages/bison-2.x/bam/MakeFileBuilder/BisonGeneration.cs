@@ -45,6 +45,21 @@ namespace bison
             var rule = meta.AddRule();
             rule.AddTarget(generatedYaccSource);
             rule.AddPrerequisite(source, BisonSourceFile.Key);
+            foreach (var requirement in sender.Requirements)
+            {
+                if (!(requirement.MetaData is MakeFileBuilder.MakeFileMeta))
+                {
+                    continue;
+                }
+                var reqMeta = requirement.MetaData as MakeFileBuilder.MakeFileMeta;
+                foreach (var reqRule in reqMeta.Rules)
+                {
+                    reqRule.ForEachTarget(reqTarget =>
+                        {
+                            rule.AddPrerequisite(reqTarget);
+                        });
+                }
+            }
 
             var bisonOutputPath = generatedYaccSource.ToString();
             var bisonOutputDir = System.IO.Path.GetDirectoryName(bisonOutputPath);
