@@ -39,7 +39,6 @@ namespace flex
         Init(
             Bam.Core.Module parent)
         {
-            base.Init(parent);
             if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
             {
                 this.Macros.Add("flexExe", Bam.Core.TokenizedString.CreateVerbatim(Bam.Core.OSUtilities.GetInstallLocation("xcrun")));
@@ -67,6 +66,9 @@ namespace flex
             {
                 throw new Bam.Core.Exception("flex not supported on this platform");
             }
+            // since the flexExe macro is needed to evaluate the Executable property
+            // in the check for existence
+            base.Init(parent);
         }
 
         public override Bam.Core.Settings

@@ -39,8 +39,6 @@ namespace bison
         Init(
             Bam.Core.Module parent)
         {
-            base.Init(parent);
-
             if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
             {
                 this.Macros.Add("bisonExe", this.CreateTokenizedString("$(packagedir)/bin/bison.exe"));
@@ -69,6 +67,9 @@ namespace bison
             {
                 throw new Bam.Core.Exception("bison not supported on this platform");
             }
+            // since the bisonExe macro is needed to evaluate the Executable property
+            // in the check for existence
+            base.Init(parent);
         }
 
         public override Bam.Core.Settings
