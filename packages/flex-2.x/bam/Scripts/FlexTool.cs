@@ -28,6 +28,7 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion // License
 using Bam.Core;
+using System.Linq;
 namespace flex
 {
     class FlexTool :
@@ -41,7 +42,7 @@ namespace flex
         {
             if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
             {
-                this.Macros.Add("flexExe", Bam.Core.TokenizedString.CreateVerbatim(Bam.Core.OSUtilities.GetInstallLocation("xcrun")));
+                this.Macros.Add("flexExe", Bam.Core.TokenizedString.CreateVerbatim(Bam.Core.OSUtilities.GetInstallLocation("xcrun").First()));
 
                 var clangMeta = Bam.Core.Graph.Instance.PackageMetaData<Clang.MetaData>("Clang");
                 this.arguments.Add(Bam.Core.TokenizedString.CreateVerbatim(System.String.Format("--sdk {0}", clangMeta.SDK)));
@@ -55,12 +56,12 @@ namespace flex
             }
             else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
             {
-                var flexLocation = Bam.Core.OSUtilities.GetInstallLocation("flex");
-                if (null == flexLocation)
+                var flexLocations = Bam.Core.OSUtilities.GetInstallLocation("flex", throwOnFailure: false);
+                if (null == flexLocations)
                 {
                     throw new Bam.Core.Exception("flex could not be found");
                 }
-                this.Macros.Add("flexExe", Bam.Core.TokenizedString.CreateVerbatim(flexLocation));
+                this.Macros.Add("flexExe", Bam.Core.TokenizedString.CreateVerbatim(flexLocations.First()));
             }
             else
             {

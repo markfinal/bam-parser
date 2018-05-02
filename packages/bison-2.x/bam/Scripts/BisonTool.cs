@@ -28,6 +28,7 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion // License
 using Bam.Core;
+using System.Linq;
 namespace bison
 {
     class BisonTool :
@@ -48,7 +49,7 @@ namespace bison
             }
             else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
             {
-                this.Macros.Add("bisonExe", Bam.Core.TokenizedString.CreateVerbatim(Bam.Core.OSUtilities.GetInstallLocation("xcrun")));
+                this.Macros.Add("bisonExe", Bam.Core.TokenizedString.CreateVerbatim(Bam.Core.OSUtilities.GetInstallLocation("xcrun").First()));
 
                 var clangMeta = Bam.Core.Graph.Instance.PackageMetaData<Clang.MetaData>("Clang");
                 this.arguments.Add(Bam.Core.TokenizedString.CreateVerbatim(System.String.Format("--sdk {0}", clangMeta.SDK)));
@@ -56,12 +57,12 @@ namespace bison
             }
             else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
             {
-                var bisonLocation = Bam.Core.OSUtilities.GetInstallLocation("bison");
-                if (null == bisonLocation)
+                var bisonLocations = Bam.Core.OSUtilities.GetInstallLocation("bison", throwOnFailure: false);
+                if (null == bisonLocations)
                 {
                     throw new Bam.Core.Exception("bison could not be found");
                 }
-                this.Macros.Add("bisonExe", Bam.Core.TokenizedString.CreateVerbatim(bisonLocation));
+                this.Macros.Add("bisonExe", Bam.Core.TokenizedString.CreateVerbatim(bisonLocations.First()));
             }
             else
             {
