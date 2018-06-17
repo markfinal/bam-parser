@@ -52,7 +52,7 @@ namespace bison
             var commands = new Bam.Core.StringArray();
             var dir = sender.CreateTokenizedString("@dir($(0))", generatedYaccSource);
             dir.Parse();
-            commands.Add(System.String.Format("IF NOT EXIST {0} MKDIR {0}", dir.ToString()));
+            commands.Add(System.String.Format("IF NOT EXIST {0} MKDIR {0}", dir.ToStringQuoteIfNecessary()));
 
             var args = new Bam.Core.StringArray();
             foreach (var envVar in bisonCompiler.EnvironmentVariables)
@@ -70,8 +70,8 @@ namespace bison
             }
             args.Add(CommandLineProcessor.Processor.StringifyTool(bisonCompiler));
             (sender.Settings as CommandLineProcessor.IConvertToCommandLine).Convert(args);
-            args.Add(System.String.Format("-o{0}", output));
-            args.Add("%(FullPath)");
+            args.Add(System.String.Format("-o{0}", generatedYaccSource.ToStringQuoteIfNecessary()));
+            args.Add("\"%(FullPath)\"");
             commands.Add(args.ToString(' '));
 
             var customBuild = config.GetSettingsGroup(VSSolutionBuilder.VSSettingsGroup.ESettingsGroup.CustomBuild, include: source.InputPath, uniqueToProject: true);
