@@ -50,8 +50,8 @@ namespace flex
 
             var args = new Bam.Core.StringArray();
             (sender.Settings as CommandLineProcessor.IConvertToCommandLine).Convert(args);
-            args.Add(System.String.Format("-o{0}", flexOutputPath));
-            args.Add(source.InputPath.ToString());
+            args.Add(System.String.Format("-o{0}", generatedFlexSource.ToStringQuoteIfNecessary()));
+            args.Add(source.InputPath.ToStringQuoteIfNecessary());
             CommandLineProcessor.Processor.Execute(context, flexCompiler, args);
         }
     }

@@ -50,8 +50,8 @@ namespace bison
 
             var args = new Bam.Core.StringArray();
             (sender.Settings as CommandLineProcessor.IConvertToCommandLine).Convert(args);
-            args.Add(System.String.Format("-o{0}", bisonOutputPath));
-            args.Add(source.InputPath.ToString());
+            args.Add(System.String.Format("-o{0}", generatedYaccSource.ToStringQuoteIfNecessary()));
+            args.Add(source.InputPath.ToStringQuoteIfNecessary());
             CommandLineProcessor.Processor.Execute(context, bisonCompiler, args);
         }
     }
