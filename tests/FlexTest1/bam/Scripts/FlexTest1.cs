@@ -85,11 +85,6 @@ namespace FlexTest1
                     }
                     linker.Libraries.AddUnique(flexGeneratedSource.StandardLibrary(this.Linker));
                 });
-
-            if (this.Linker is VisualCCommon.LinkerBase)
-            {
-                this.LinkAgainst<WindowsSDK.WindowsSDK>();
-            }
         }
     }
 }
