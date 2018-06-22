@@ -37,8 +37,8 @@ namespace bison
     {
         static public Bam.Core.PathKey Key = Bam.Core.PathKey.Generate("Bison Source File");
 
-        public override void
-        Evaluate()
+        protected override void
+        EvaluateInternal()
         {
             this.ReasonToExecute = null;
         }
