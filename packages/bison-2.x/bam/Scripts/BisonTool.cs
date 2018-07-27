@@ -1,5 +1,5 @@
 #region License
-// Copyright (c) 2010-2017, Mark Final
+// Copyright (c) 2010-2018, Mark Final
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -28,6 +28,7 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion // License
 using Bam.Core;
+using System.Linq;
 namespace bison
 {
     class BisonTool :
@@ -39,19 +40,37 @@ namespace bison
         Init(
             Bam.Core.Module parent)
         {
-            base.Init(parent);
-
             if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
             {
+                this.Macros.Add("bisonExe", this.CreateTokenizedString("$(packagedir)/bin/bison.exe"));
+
                 // for dlls, e.g. libintl.dll
                 this.EnvironmentVariables.Add("PATH", new TokenizedStringArray(this.CreateTokenizedString("$(packagedir)/bin")));
             }
             else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
             {
+                this.Macros.Add("bisonExe", Bam.Core.TokenizedString.CreateVerbatim(Bam.Core.OSUtilities.GetInstallLocation("xcrun").First()));
+
                 var clangMeta = Bam.Core.Graph.Instance.PackageMetaData<Clang.MetaData>("Clang");
                 this.arguments.Add(Bam.Core.TokenizedString.CreateVerbatim(System.String.Format("--sdk {0}", clangMeta.SDK)));
                 this.arguments.Add("bison");
             }
+            else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
+            {
+                var bisonLocations = Bam.Core.OSUtilities.GetInstallLocation("bison", throwOnFailure: false);
+                if (null == bisonLocations)
+                {
+                    throw new Bam.Core.Exception("bison could not be found");
+                }
+                this.Macros.Add("bisonExe", Bam.Core.TokenizedString.CreateVerbatim(bisonLocations.First()));
+            }
+            else
+            {
+                throw new Bam.Core.Exception("bison not supported on this platform");
+            }
+            // since the bisonExe macro is needed to evaluate the Executable property
+            // in the check for existence
+            base.Init(parent);
         }
 
         public override Bam.Core.Settings
@@ -64,25 +83,7 @@ namespace bison
         {
             get
             {
-                if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
-                {
-                    return this.CreateTokenizedString("$(packagedir)/bin/bison.exe");
-                }
-                else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
-                {
-                    return Bam.Core.TokenizedString.CreateVerbatim(Bam.Core.OSUtilities.GetInstallLocation("xcrun"));
-                }
-                else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
-                {
-                    var flexLocation = Bam.Core.OSUtilities.GetInstallLocation("bison");
-                    if (null == flexLocation)
-                    {
-                        throw new Bam.Core.Exception("bison could not be found");
-                    }
-                    return Bam.Core.TokenizedString.CreateVerbatim(flexLocation);
-                }
-
-                throw new Bam.Core.Exception("bison unsupported on this platform");
+                return this.Macros["bisonExe"];
             }
         }
 

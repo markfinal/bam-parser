@@ -1,5 +1,5 @@
 #region License
-// Copyright (c) 2010-2017, Mark Final
+// Copyright (c) 2010-2018, Mark Final
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -45,15 +45,30 @@ namespace bison
             var rule = meta.AddRule();
             rule.AddTarget(generatedYaccSource);
             rule.AddPrerequisite(source, BisonSourceFile.Key);
+            foreach (var requirement in sender.Requirements)
+            {
+                if (!(requirement.MetaData is MakeFileBuilder.MakeFileMeta))
+                {
+                    continue;
+                }
+                var reqMeta = requirement.MetaData as MakeFileBuilder.MakeFileMeta;
+                foreach (var reqRule in reqMeta.Rules)
+                {
+                    reqRule.ForEachTarget(reqTarget =>
+                        {
+                            rule.AddPrerequisite(reqTarget);
+                        });
+                }
+            }
 
-            var bisonOutputPath = generatedYaccSource.Parse();
+            var bisonOutputPath = generatedYaccSource.ToString();
             var bisonOutputDir = System.IO.Path.GetDirectoryName(bisonOutputPath);
 
             var args = new Bam.Core.StringArray();
             args.Add(CommandLineProcessor.Processor.StringifyTool(bisonCompiler));
             (sender.Settings as CommandLineProcessor.IConvertToCommandLine).Convert(args);
             args.Add(System.String.Format("-o{0}", bisonOutputPath));
-            args.Add(source.InputPath.Parse());
+            args.Add(source.InputPath.ToString());
             rule.AddShellCommand(args.ToString(' '));
 
             meta.CommonMetaData.AddDirectory(bisonOutputDir);

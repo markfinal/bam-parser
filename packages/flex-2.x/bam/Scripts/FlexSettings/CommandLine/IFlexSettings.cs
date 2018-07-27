@@ -1,5 +1,5 @@
 #region License
-// Copyright (c) 2010-2017, Mark Final
+// Copyright (c) 2010-2018, Mark Final
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,7 @@ namespace flex
         {
             if (settings.Prefix != null)
             {
-                commandLine.Add(System.String.Format("-P{0}", settings.Prefix.Parse()));
+                commandLine.Add(System.String.Format("-P{0}", settings.Prefix.ToString()));
             }
             if (settings.Debug)
             {

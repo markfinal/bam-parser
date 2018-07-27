@@ -1,5 +1,5 @@
 #region License
-// Copyright (c) 2010-2017, Mark Final
+// Copyright (c) 2010-2018, Mark Final
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -28,6 +28,7 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion // License
 using Bam.Core;
+using System.Linq;
 namespace flex
 {
     class FlexTool :
@@ -39,17 +40,36 @@ namespace flex
         Init(
             Bam.Core.Module parent)
         {
-            base.Init(parent);
             if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
             {
+                this.Macros.Add("flexExe", Bam.Core.TokenizedString.CreateVerbatim(Bam.Core.OSUtilities.GetInstallLocation("xcrun").First()));
+
                 var clangMeta = Bam.Core.Graph.Instance.PackageMetaData<Clang.MetaData>("Clang");
                 this.arguments.Add(Bam.Core.TokenizedString.CreateVerbatim(System.String.Format("--sdk {0}", clangMeta.SDK)));
                 this.arguments.Add("flex");
             }
             else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
             {
+                this.Macros.Add("flexExe", this.CreateTokenizedString("$(packagedir)/bin/flex.exe"));
+
                 this.Macros.Add("LibraryPath", this.CreateTokenizedString("$(packagedir)/lib"));
             }
+            else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
+            {
+                var flexLocations = Bam.Core.OSUtilities.GetInstallLocation("flex", throwOnFailure: false);
+                if (null == flexLocations)
+                {
+                    throw new Bam.Core.Exception("flex could not be found");
+                }
+                this.Macros.Add("flexExe", Bam.Core.TokenizedString.CreateVerbatim(flexLocations.First()));
+            }
+            else
+            {
+                throw new Bam.Core.Exception("flex not supported on this platform");
+            }
+            // since the flexExe macro is needed to evaluate the Executable property
+            // in the check for existence
+            base.Init(parent);
         }
 
         public override Bam.Core.Settings
@@ -62,25 +82,7 @@ namespace flex
         {
             get
             {
-                if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
-                {
-                    return this.CreateTokenizedString("$(packagedir)/bin/flex.exe");
-                }
-                else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
-                {
-                    return Bam.Core.TokenizedString.CreateVerbatim(Bam.Core.OSUtilities.GetInstallLocation("xcrun"));
-                }
-                else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
-                {
-                    var flexLocation = Bam.Core.OSUtilities.GetInstallLocation("flex");
-                    if (null == flexLocation)
-                    {
-                        throw new Bam.Core.Exception("flex could not be found");
-                    }
-                    return Bam.Core.TokenizedString.CreateVerbatim(flexLocation);
-                }
-
-                throw new Bam.Core.Exception("flex unsupported on this platform");
+                return this.Macros["flexExe"];
             }
         }
 

@@ -1,5 +1,5 @@
 #region License
-// Copyright (c) 2010-2017, Mark Final
+// Copyright (c) 2010-2018, Mark Final
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,7 @@ namespace bison
         {
             if (null != settings.Prefix)
             {
-                commandLine.Add(System.String.Format("-p{0}", settings.Prefix.Parse()));
+                commandLine.Add(System.String.Format("-p{0}", settings.Prefix.ToString()));
             }
             if (settings.Debug)
             {
@@ -51,7 +51,7 @@ namespace bison
             }
             if (null != settings.MacroDefinitionHeaderPath)
             {
-                commandLine.Add(System.String.Format("--defines={0}", settings.MacroDefinitionHeaderPath.ParseAndQuoteIfNecessary()));
+                commandLine.Add(System.String.Format("--defines={0}", settings.MacroDefinitionHeaderPath.ToStringQuoteIfNecessary()));
             }
         }
     }

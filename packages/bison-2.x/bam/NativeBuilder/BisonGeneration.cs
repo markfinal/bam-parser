@@ -1,5 +1,5 @@
 #region License
-// Copyright (c) 2010-2017, Mark Final
+// Copyright (c) 2010-2018, Mark Final
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,7 @@ namespace bison
             Bam.Core.TokenizedString generatedYaccSource,
             BisonSourceFile source)
         {
-            var bisonOutputPath = generatedYaccSource.Parse();
+            var bisonOutputPath = generatedYaccSource.ToString();
             var bisonOutputDir = System.IO.Path.GetDirectoryName(bisonOutputPath);
             if (!System.IO.Directory.Exists(bisonOutputDir))
             {
@@ -50,8 +50,8 @@ namespace bison
 
             var args = new Bam.Core.StringArray();
             (sender.Settings as CommandLineProcessor.IConvertToCommandLine).Convert(args);
-            args.Add(System.String.Format("-o{0}", bisonOutputPath));
-            args.Add(source.InputPath.Parse());
+            args.Add(System.String.Format("-o{0}", generatedYaccSource.ToStringQuoteIfNecessary()));
+            args.Add(source.InputPath.ToStringQuoteIfNecessary());
             CommandLineProcessor.Processor.Execute(context, bisonCompiler, args);
         }
     }

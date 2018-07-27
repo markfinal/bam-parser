@@ -1,5 +1,5 @@
 #region License
-// Copyright (c) 2010-2017, Mark Final
+// Copyright (c) 2010-2018, Mark Final
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -47,10 +47,12 @@ namespace bison
             var project = solution.EnsureProjectExists(encapsulating);
             var config = project.GetConfiguration(encapsulating);
 
-            var output = generatedYaccSource.Parse();
+            var output = generatedYaccSource.ToString();
 
             var commands = new Bam.Core.StringArray();
-            commands.Add(System.String.Format("IF NOT EXIST {0} MKDIR {0}", sender.CreateTokenizedString("@dir($(0))", generatedYaccSource).Parse()));
+            var dir = sender.CreateTokenizedString("@dir($(0))", generatedYaccSource);
+            dir.Parse();
+            commands.Add(System.String.Format("IF NOT EXIST {0} MKDIR {0}", dir.ToStringQuoteIfNecessary()));
 
             var args = new Bam.Core.StringArray();
             foreach (var envVar in bisonCompiler.EnvironmentVariables)
@@ -60,7 +62,7 @@ namespace bison
                 content.AppendFormat("{0}=", envVar.Key);
                 foreach (var value in envVar.Value)
                 {
-                    content.AppendFormat("{0};", value.ParseAndQuoteIfNecessary());
+                    content.AppendFormat("{0};", value.ToStringQuoteIfNecessary());
                 }
                 content.AppendFormat("%{0}%", envVar.Key);
                 args.Add(content.ToString());
@@ -68,13 +70,13 @@ namespace bison
             }
             args.Add(CommandLineProcessor.Processor.StringifyTool(bisonCompiler));
             (sender.Settings as CommandLineProcessor.IConvertToCommandLine).Convert(args);
-            args.Add(System.String.Format("-o{0}", output));
-            args.Add("%(FullPath)");
+            args.Add(System.String.Format("-o{0}", generatedYaccSource.ToStringQuoteIfNecessary()));
+            args.Add("\"%(FullPath)\"");
             commands.Add(args.ToString(' '));
 
             var customBuild = config.GetSettingsGroup(VSSolutionBuilder.VSSettingsGroup.ESettingsGroup.CustomBuild, include: source.InputPath, uniqueToProject: true);
             customBuild.AddSetting("Command", commands.ToString(System.Environment.NewLine), condition: config.ConditionText);
-            customBuild.AddSetting("Message", System.String.Format("Yacc'ing {0} into {1}", System.IO.Path.GetFileName(source.InputPath.Parse()), output), condition: config.ConditionText);
+            customBuild.AddSetting("Message", System.String.Format("Yacc'ing {0} into {1}", System.IO.Path.GetFileName(source.InputPath.ToString()), output), condition: config.ConditionText);
             customBuild.AddSetting("Outputs", output, condition: config.ConditionText);
 
             config.AddOtherFile(source);
