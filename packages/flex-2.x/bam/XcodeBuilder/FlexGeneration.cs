@@ -81,7 +81,7 @@ namespace flex
             target.AddPreBuildCommands(commands, configuration);
 
             target.EnsureFileOfTypeExists(
-                module.InputPath,
+                module.Source.InputPath,
                 XcodeBuilder.FileReference.EFileType.LexFile
             );
         }
