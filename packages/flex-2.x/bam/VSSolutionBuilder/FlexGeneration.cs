@@ -30,6 +30,69 @@
 using Bam.Core;
 namespace flex
 {
+#if BAM_V2
+    public static partial class VSSolutionSupport
+    {
+        public static void
+        Flex(
+            FlexGeneratedSource module)
+        {
+            var encapsulating = module.GetEncapsulatingReferencedModule();
+
+            var solution = Bam.Core.Graph.Instance.MetaData as VSSolutionBuilder.VSSolution;
+            var project = solution.EnsureProjectExists(encapsulating);
+            var config = project.GetConfiguration(encapsulating);
+
+            var commands = new Bam.Core.StringArray();
+            foreach (var dir in module.OutputDirectories)
+            {
+                commands.Add(
+                    System.String.Format(
+                        "IF NOT EXIST {0} MKDIR {0}",
+                        dir.ToStringQuoteIfNecessary()
+                    )
+                );
+            }
+
+            var args = new Bam.Core.StringArray();
+            args.Add(CommandLineProcessor.Processor.StringifyTool(module.Tool as Bam.Core.ICommandLineTool));
+            args.AddRange(
+                CommandLineProcessor.NativeConversion.Convert(
+                    module.Settings,
+                    module
+                )
+            );
+            commands.Add(args.ToString(' '));
+
+            var customBuild = config.GetSettingsGroup(
+                VSSolutionBuilder.VSSettingsGroup.ESettingsGroup.CustomBuild,
+                include: module.Source.InputPath,
+                uniqueToProject: true
+            );
+            customBuild.AddSetting(
+                "Command",
+                commands.ToString(System.Environment.NewLine),
+                condition: config.ConditionText
+            );
+            customBuild.AddSetting(
+                "Message",
+                System.String.Format(
+                    "Flex'ing {0} into {1}",
+                    System.IO.Path.GetFileName(module.Source.InputPath.ToString()),
+                    module.GeneratedPaths[FlexGeneratedSource.SourceFileKey]
+                ),
+                condition: config.ConditionText
+            );
+            customBuild.AddSetting(
+                "Outputs",
+                module.GeneratedPaths[FlexGeneratedSource.SourceFileKey],
+                condition: config.ConditionText
+            );
+
+            config.AddOtherFile(module.Source);
+        }
+    }
+#else
     public sealed class VSSolutionFlexGeneration :
         IFlexGenerationPolicy
     {
@@ -69,4 +132,5 @@ namespace flex
             config.AddOtherFile(source);
         }
     }
+#endif
 }

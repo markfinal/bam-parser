@@ -49,7 +49,12 @@ namespace flex.FlexExtension
             collection.PrivatePatch(settings =>
                 {
                     var compiler = settings as C.ICommonCompilerSettings;
-                    compiler.IncludePaths.AddUnique(collection.CreateTokenizedString("@dir($(0))", objFile.GeneratedPaths[C.ObjectFile.Key]));
+                    compiler.IncludePaths.AddUnique(
+                        collection.CreateTokenizedString(
+                            "@dir($(0))",
+                            objFile.GeneratedPaths[C.ObjectFile.ObjectFileKey]
+                        )
+                    );
                 });
 
             if (collection.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
@@ -59,7 +64,12 @@ namespace flex.FlexExtension
                 collection.PrivatePatch(settings =>
                     {
                         var compiler = settings as C.ICommonCompilerSettings;
-                        compiler.IncludePaths.AddUnique(collection.CreateTokenizedString("$(0)/include", flexTool.Macros["packagedir"]));
+                        compiler.IncludePaths.AddUnique(
+                            collection.CreateTokenizedString(
+                                "$(0)/include",
+                                flexTool.Macros["packagedir"]
+                            )
+                        );
                     });
             }
 

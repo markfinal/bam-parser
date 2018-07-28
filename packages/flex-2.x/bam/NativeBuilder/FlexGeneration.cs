@@ -30,6 +30,30 @@
 using Bam.Core;
 namespace flex
 {
+#if BAM_V2
+    public static partial class NativeSupport
+    {
+        public static void
+        Flex(
+            FlexGeneratedSource module,
+            Bam.Core.ExecutionContext context)
+        {
+            foreach (var dir in module.OutputDirectories)
+            {
+                Bam.Core.IOWrapper.CreateDirectoryIfNotExists(dir.ToString());
+            }
+
+            CommandLineProcessor.Processor.Execute(
+                context,
+                module.Tool as Bam.Core.ICommandLineTool,
+                CommandLineProcessor.NativeConversion.Convert(
+                    module.Settings,
+                    module
+                )
+            );
+        }
+    }
+#else
     public sealed class NativeFlexGeneration :
         IFlexGenerationPolicy
     {
@@ -55,4 +79,5 @@ namespace flex
             CommandLineProcessor.Processor.Execute(context, flexCompiler, args);
         }
     }
+#endif
 }
