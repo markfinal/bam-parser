@@ -45,6 +45,21 @@ namespace bison
                 System.Diagnostics.Debug.Assert(input.Key == C.ObjectFile.ObjectFileKey);
                 rule.AddPrerequisite(input.Value, input.Key);
             }
+            foreach (var requirement in module.Requirements)
+            {
+                if (!(requirement.MetaData is MakeFileBuilder.MakeFileMeta))
+                {
+                    continue;
+                }
+                var reqMeta = requirement.MetaData as MakeFileBuilder.MakeFileMeta;
+                foreach (var reqRule in reqMeta.Rules)
+                {
+                    reqRule.ForEachTarget(reqTarget =>
+                    {
+                        rule.AddPrerequisite(reqTarget);
+                    });
+                }
+            }
 
             var tool = module.Tool as Bam.Core.ICommandLineTool;
             meta.CommonMetaData.ExtendEnvironmentVariables(tool.EnvironmentVariables);
