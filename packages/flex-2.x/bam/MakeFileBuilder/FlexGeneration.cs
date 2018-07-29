@@ -45,6 +45,21 @@ namespace flex
             var rule = meta.AddRule();
             rule.AddTarget(generatedFlexSource);
             rule.AddPrerequisite(source, FlexSourceFile.Key);
+            foreach (var requirement in sender.Requirements)
+            {
+                if (!(requirement.MetaData is MakeFileBuilder.MakeFileMeta))
+                {
+                    continue;
+                }
+                var reqMeta = requirement.MetaData as MakeFileBuilder.MakeFileMeta;
+                foreach (var reqRule in reqMeta.Rules)
+                {
+                    reqRule.ForEachTarget(reqTarget =>
+                    {
+                        rule.AddPrerequisite(reqTarget);
+                    });
+                }
+            }
 
             var flexOutputPath = generatedFlexSource.ToString();
             var flexOutputDir = System.IO.Path.GetDirectoryName(flexOutputPath);
