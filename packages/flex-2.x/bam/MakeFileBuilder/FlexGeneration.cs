@@ -80,7 +80,22 @@ namespace flex
             var meta = new MakeFileBuilder.MakeFileMeta(sender);
             var rule = meta.AddRule();
             rule.AddTarget(generatedFlexSource);
-            rule.AddPrerequisite(source, FlexSourceFile.FlexSourceKey);
+            rule.AddPrerequisite(source, FFlexSourceFile.FlexSourceKey);
+            foreach (var requirement in sender.Requirements)
+            {
+                if (!(requirement.MetaData is MakeFileBuilder.MakeFileMeta))
+                {
+                    continue;
+                }
+                var reqMeta = requirement.MetaData as MakeFileBuilder.MakeFileMeta;
+                foreach (var reqRule in reqMeta.Rules)
+                {
+                    reqRule.ForEachTarget(reqTarget =>
+                    {
+                        rule.AddPrerequisite(reqTarget);
+                    });
+                }
+            }
 
             var flexOutputPath = generatedFlexSource.ToString();
             var flexOutputDir = System.IO.Path.GetDirectoryName(flexOutputPath);
