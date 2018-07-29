@@ -35,7 +35,7 @@ namespace bison
         Bam.Core.IInputPath,
         Bam.Core.IChildModule
     {
-        static public Bam.Core.PathKey Key = Bam.Core.PathKey.Generate("Bison Source File");
+        public const string BisonSourceKey = "Bison source file";
 
         protected override void
         EvaluateInternal()
@@ -49,22 +49,18 @@ namespace bison
         {
         }
 
-        protected override void
-        GetExecutionPolicy(
-            string mode)
-        {
-            // there is no execution policy
-        }
-
         public Bam.Core.TokenizedString InputPath
         {
             get
             {
-                return this.GeneratedPaths[Key];
+                return this.GeneratedPaths[BisonSourceKey];
             }
             set
             {
-                this.GeneratedPaths[Key] = value;
+                this.RegisterGeneratedFile(
+                    BisonSourceKey,
+                    value
+                );
             }
         }
 

@@ -35,7 +35,6 @@ namespace bison
         Bam.Core.ICloneModule
     {
         private BisonSourceFile SourceModule;
-        private IBisonGenerationPolicy Policy = null;
 
         protected override void
         Init(
@@ -70,17 +69,22 @@ namespace bison
         EvaluateInternal()
         {
             this.ReasonToExecute = null;
-            var generatedPath = this.GeneratedPaths[Key].ToString();
+            var generatedPath = this.GeneratedPaths[SourceFileKey].ToString();
             if (!System.IO.File.Exists(generatedPath))
             {
-                this.ReasonToExecute = Bam.Core.ExecuteReasoning.FileDoesNotExist(this.GeneratedPaths[Key]);
+                this.ReasonToExecute = Bam.Core.ExecuteReasoning.FileDoesNotExist(
+                    this.GeneratedPaths[SourceFileKey]
+                );
                 return;
             }
             var generatedFileWriteTime = System.IO.File.GetLastWriteTime(generatedPath);
             var sourceFileWriteTime = System.IO.File.GetLastWriteTime(this.SourceModule.InputPath.ToString());
             if (sourceFileWriteTime > generatedFileWriteTime)
             {
-                this.ReasonToExecute = Bam.Core.ExecuteReasoning.InputFileNewer(this.GeneratedPaths[Key], this.SourceModule.InputPath);
+                this.ReasonToExecute = Bam.Core.ExecuteReasoning.InputFileNewer(
+                    this.GeneratedPaths[SourceFileKey],
+                    this.SourceModule.InputPath
+                );
                 return;
             }
         }
@@ -89,15 +93,35 @@ namespace bison
         ExecuteInternal(
             Bam.Core.ExecutionContext context)
         {
-            this.Policy.Bison(this, context, this.Compiler, this.GeneratedPaths[Key], this.Source);
-        }
+            switch (Bam.Core.Graph.Instance.Mode)
+            {
+#if D_PACKAGE_MAKEFILEBUILDER
+                case "MakeFile":
+                    MakeFileSupport.Bison(this);
+                    break;
+#endif
 
-        protected override void
-        GetExecutionPolicy(
-            string mode)
-        {
-            var className = "bison." + mode + "BisonGeneration";
-            this.Policy = Bam.Core.ExecutionPolicyUtilities<IBisonGenerationPolicy>.Create(className);
+#if D_PACKAGE_NATIVEBUILDER
+                case "Native":
+                    NativeSupport.Bison(this, context);
+                    break;
+#endif
+
+#if D_PACKAGE_VSSOLUTIONBUILDER
+                case "VSSolution":
+                    VSSolutionSupport.Bison(this);
+                    break;
+#endif
+
+#if D_PACKAGE_XCODEBUILDER
+                case "Xcode":
+                    XcodeSupport.Bison(this);
+                    break;
+#endif
+
+                default:
+                    throw new System.NotImplementedException();
+            }
         }
 
         private Bam.Core.PreBuiltTool Compiler
@@ -121,6 +145,14 @@ namespace bison
             var clone = Bam.Core.Module.CloneWithPrivatePatches<BisonGeneratedSource>(this, parent, postInitCallback: postInitCB);
             clone.Source = this.Source;
             return clone;
+        }
+
+        public override System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, Bam.Core.Module>> InputModules
+        {
+            get
+            {
+                yield return new System.Collections.Generic.KeyValuePair<string, Bam.Core.Module>(BisonSourceFile.BisonSourceKey, this.SourceModule);
+            }
         }
     }
 }

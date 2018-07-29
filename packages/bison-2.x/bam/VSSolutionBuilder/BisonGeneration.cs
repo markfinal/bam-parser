@@ -30,6 +30,69 @@
 using Bam.Core;
 namespace bison
 {
+#if BAM_V2
+    public static partial class VSSolutionSupport
+    {
+        public static void
+        Bison(
+            BisonGeneratedSource module)
+        {
+            var encapsulating = module.GetEncapsulatingReferencedModule();
+
+            var solution = Bam.Core.Graph.Instance.MetaData as VSSolutionBuilder.VSSolution;
+            var project = solution.EnsureProjectExists(encapsulating);
+            var config = project.GetConfiguration(encapsulating);
+
+            var commands = new Bam.Core.StringArray();
+            foreach (var dir in module.OutputDirectories)
+            {
+                commands.Add(
+                    System.String.Format(
+                        "IF NOT EXIST {0} MKDIR {0}",
+                        dir.ToStringQuoteIfNecessary()
+                    )
+                );
+            }
+
+            var args = new Bam.Core.StringArray();
+            args.Add(CommandLineProcessor.Processor.StringifyTool(module.Tool as Bam.Core.ICommandLineTool));
+            args.AddRange(
+                CommandLineProcessor.NativeConversion.Convert(
+                    module.Settings,
+                    module
+                )
+            );
+            commands.Add(args.ToString(' '));
+
+            var customBuild = config.GetSettingsGroup(
+                VSSolutionBuilder.VSSettingsGroup.ESettingsGroup.CustomBuild,
+                include: module.Source.InputPath,
+                uniqueToProject: true
+            );
+            customBuild.AddSetting(
+                "Command",
+                commands.ToString(System.Environment.NewLine),
+                condition: config.ConditionText
+            );
+            customBuild.AddSetting(
+                "Message",
+                System.String.Format(
+                    "Flex'ing {0} into {1}",
+                    System.IO.Path.GetFileName(module.Source.InputPath.ToString()),
+                    module.GeneratedPaths[BisonGeneratedSource.SourceFileKey]
+                ),
+                condition: config.ConditionText
+            );
+            customBuild.AddSetting(
+                "Outputs",
+                module.GeneratedPaths[BisonGeneratedSource.SourceFileKey],
+                condition: config.ConditionText
+            );
+
+            config.AddOtherFile(module.Source);
+        }
+    }
+#else
     public sealed class VSSolutionBisonGeneration :
         IBisonGenerationPolicy
     {
@@ -82,4 +145,5 @@ namespace bison
             config.AddOtherFile(source);
         }
     }
+#endif
 }

@@ -94,7 +94,7 @@ namespace BisonTest1
                 bisonSettings.MacroDefinitionHeaderPath =
                     bisonGeneratedSource.CreateTokenizedString(
                         "@changeextension($(0),.tab.h)",
-                        bisonGeneratedSource.GeneratedPaths[bison.BisonGeneratedSource.Key]
+                        bisonGeneratedSource.GeneratedPaths[bison.BisonGeneratedSource.SourceFileKey]
                     );
             });
         }
