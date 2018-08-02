@@ -55,6 +55,19 @@ namespace bison
             }
 
             var args = new Bam.Core.StringArray();
+            foreach (var envVar in (module.Tool as Bam.Core.ICommandLineTool).EnvironmentVariables)
+            {
+                args.Add("set");
+                var content = new System.Text.StringBuilder();
+                content.AppendFormat("{0}=", envVar.Key);
+                foreach (var value in envVar.Value)
+                {
+                    content.AppendFormat("{0};", value.ToStringQuoteIfNecessary());
+                }
+                content.AppendFormat("%{0}%", envVar.Key);
+                args.Add(content.ToString());
+                args.Add("&&");
+            }
             args.Add(CommandLineProcessor.Processor.StringifyTool(module.Tool as Bam.Core.ICommandLineTool));
             args.AddRange(
                 CommandLineProcessor.NativeConversion.Convert(
