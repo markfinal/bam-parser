@@ -119,7 +119,11 @@ namespace flex
 
 #if D_PACKAGE_VSSOLUTIONBUILDER
                 case "VSSolution":
-                    VSSolutionSupport.Flex(this);
+                    VSSolutionBuilder.Support.AddCustomBuildStepForCommandLineTool(
+                        this,
+                        this.GeneratedPaths[SourceFileKey],
+                        "Flex'ing"
+                    );
                     break;
 #endif
 

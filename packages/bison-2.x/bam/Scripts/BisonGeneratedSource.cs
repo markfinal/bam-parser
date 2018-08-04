@@ -109,7 +109,11 @@ namespace bison
 
 #if D_PACKAGE_VSSOLUTIONBUILDER
                 case "VSSolution":
-                    VSSolutionSupport.Bison(this);
+                    VSSolutionBuilder.Support.AddCustomBuildStepForCommandLineTool(
+                        this,
+                        this.GeneratedPaths[SourceFileKey],
+                        "Yacc'ing"
+                    );
                     break;
 #endif
 
