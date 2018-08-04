@@ -31,6 +31,7 @@ using Bam.Core;
 namespace flex
 {
 #if BAM_V2
+#if false
     public static partial class NativeSupport
     {
         public static void
@@ -54,6 +55,7 @@ namespace flex
             );
         }
     }
+#endif
 #else
     public sealed class NativeFlexGeneration :
         IFlexGenerationPolicy
