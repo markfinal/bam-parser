@@ -122,7 +122,8 @@ namespace flex
                     VSSolutionBuilder.Support.AddCustomBuildStepForCommandLineTool(
                         this,
                         this.GeneratedPaths[SourceFileKey],
-                        "Flex'ing"
+                        "Flex'ing",
+                        true
                     );
                     break;
 #endif

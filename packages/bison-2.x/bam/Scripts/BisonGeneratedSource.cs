@@ -112,7 +112,8 @@ namespace bison
                     VSSolutionBuilder.Support.AddCustomBuildStepForCommandLineTool(
                         this,
                         this.GeneratedPaths[SourceFileKey],
-                        "Yacc'ing"
+                        "Yacc'ing",
+                        true
                     );
                     break;
 #endif
