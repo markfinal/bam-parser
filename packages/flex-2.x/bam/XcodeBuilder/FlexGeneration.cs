@@ -47,7 +47,6 @@ namespace flex
                 module,
                 target,
                 configuration,
-                true,
                 XcodeBuilder.FileReference.EFileType.LexFile
             );
         }

@@ -47,7 +47,6 @@ namespace bison
                 module,
                 target,
                 configuration,
-                true,
                 XcodeBuilder.FileReference.EFileType.YaccFile
             );
         }
