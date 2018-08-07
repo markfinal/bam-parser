@@ -31,6 +31,7 @@ using Bam.Core;
 namespace bison
 {
 #if BAM_V2
+#if false
     public static partial class XcodeSupport
     {
         public static void
@@ -49,6 +50,7 @@ namespace bison
             );
         }
     }
+#endif
 #else
     public sealed class XcodeBisonGeneration :
         IBisonGenerationPolicy

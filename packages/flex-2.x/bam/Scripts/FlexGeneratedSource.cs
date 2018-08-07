@@ -130,7 +130,18 @@ namespace flex
 
 #if D_PACKAGE_XCODEBUILDER
                 case "Xcode":
-                    XcodeSupport.Flex(this);
+                    {
+                        XcodeBuilder.Target target;
+                        XcodeBuilder.Configuration configuration;
+                        XcodeBuilder.Support.AddPreBuildStepForCommandLineTool(
+                            this,
+                            out target,
+                            out configuration,
+                            XcodeBuilder.FileReference.EFileType.LexFile,
+                            true,
+                            false
+                        );
+                    }
                     break;
 #endif
 

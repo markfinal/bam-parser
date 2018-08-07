@@ -120,7 +120,18 @@ namespace bison
 
 #if D_PACKAGE_XCODEBUILDER
                 case "Xcode":
-                    XcodeSupport.Bison(this);
+                    {
+                        XcodeBuilder.Target target;
+                        XcodeBuilder.Configuration configuration;
+                        XcodeBuilder.Support.AddPreBuildStepForCommandLineTool(
+                            this,
+                            out target,
+                            out configuration,
+                            XcodeBuilder.FileReference.EFileType.YaccFile,
+                            true,
+                            false
+                        );
+                    }
                     break;
 #endif
 
