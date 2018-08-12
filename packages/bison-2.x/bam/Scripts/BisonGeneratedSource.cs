@@ -97,7 +97,7 @@ namespace bison
             {
 #if D_PACKAGE_MAKEFILEBUILDER
                 case "MakeFile":
-                    MakeFileSupport.Bison(this);
+                    MakeFileBuilder.Support.Add(this);
                     break;
 #endif
 

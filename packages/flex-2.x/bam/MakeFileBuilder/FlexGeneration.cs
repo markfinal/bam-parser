@@ -31,6 +31,7 @@ using Bam.Core;
 namespace flex
 {
 #if BAM_V2
+#if false
     public static partial class MakeFileSupport
     {
         public static void
@@ -80,6 +81,7 @@ namespace flex
             }
         }
     }
+#endif
 #else
     public sealed class MakeFileFlexGeneration :
         IFlexGenerationPolicy

@@ -107,7 +107,7 @@ namespace flex
             {
 #if D_PACKAGE_MAKEFILEBUILDER
                 case "MakeFile":
-                    MakeFileSupport.Flex(this);
+                    MakeFileBuilder.Support.Add(this);
                     break;
 #endif
 
