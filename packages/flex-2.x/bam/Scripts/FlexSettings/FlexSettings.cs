@@ -30,9 +30,10 @@
 using Bam.Core;
 namespace flex
 {
+    [CommandLineProcessor.OutputPath(FlexGeneratedSource.SourceFileKey, "-o")]
+    [CommandLineProcessor.InputPaths(FlexSourceFile.FlexSourceKey, "")]
     public sealed class FlexSettings :
         Bam.Core.Settings,
-        CommandLineProcessor.IConvertToCommandLine,
         IFlexSettings
     {
         public FlexSettings(
@@ -41,29 +42,31 @@ namespace flex
             this.InitializeAllInterfaces(module, true, true);
         }
 
-        void
-        CommandLineProcessor.IConvertToCommandLine.Convert(
-            Bam.Core.StringArray commandLine)
-        {
-            (this as IFlexSettings).Convert(commandLine);
-        }
-
+        [CommandLineProcessor.Path("-P")]
         Bam.Core.TokenizedString IFlexSettings.Prefix
         {
             get;
             set;
         }
 
+        [CommandLineProcessor.Bool("-d", "")] // rather than --debug for maximum compatibility
         bool IFlexSettings.Debug
         {
             get;
             set;
         }
 
+        [CommandLineProcessor.Bool("-L", "")]
         bool IFlexSettings.InsertLineDirectives
         {
             get;
             set;
+        }
+
+        public override void
+        AssignFileLayout()
+        {
+            this.FileLayout = ELayout.Cmds_Outputs_Inputs;
         }
     }
 }

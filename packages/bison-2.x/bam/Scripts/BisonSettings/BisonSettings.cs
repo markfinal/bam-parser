@@ -30,9 +30,10 @@
 using Bam.Core;
 namespace bison
 {
+    [CommandLineProcessor.OutputPath(BisonGeneratedSource.SourceFileKey, "-o")]
+    [CommandLineProcessor.InputPaths(BisonSourceFile.BisonSourceKey, "")]
     public sealed class BisonSettings :
         Bam.Core.Settings,
-        CommandLineProcessor.IConvertToCommandLine,
         IBisonSettings
     {
         public BisonSettings(
@@ -41,35 +42,38 @@ namespace bison
             this.InitializeAllInterfaces(module, true, true);
         }
 
-        void
-        CommandLineProcessor.IConvertToCommandLine.Convert(
-            Bam.Core.StringArray commandLine)
-        {
-            (this as IBisonSettings).Convert(commandLine);
-        }
-
+        [CommandLineProcessor.Path("-p")]
         Bam.Core.TokenizedString IBisonSettings.Prefix
         {
             get;
             set;
         }
 
+        [CommandLineProcessor.Bool("-d", "")] // // rather than --debug for maximum compatibility
         bool IBisonSettings.Debug
         {
             get;
             set;
         }
 
+        [CommandLineProcessor.Bool("-l", "")]
         bool IBisonSettings.InsertLineDirectives
         {
             get;
             set;
         }
 
+        [CommandLineProcessor.Path("--defines=")]
         Bam.Core.TokenizedString IBisonSettings.MacroDefinitionHeaderPath
         {
             get;
             set;
+        }
+
+        public override void
+        AssignFileLayout()
+        {
+            this.FileLayout = ELayout.Cmds_Outputs_Inputs;
         }
     }
 }

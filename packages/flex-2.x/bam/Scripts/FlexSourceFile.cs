@@ -35,7 +35,7 @@ namespace flex
         Bam.Core.IInputPath,
         Bam.Core.IChildModule
     {
-        static public Bam.Core.PathKey Key = Bam.Core.PathKey.Generate("Flex Source File");
+        public const string FlexSourceKey = "Flex source file";
 
         protected override void
         Init(
@@ -56,22 +56,18 @@ namespace flex
         {
         }
 
-        protected override void
-        GetExecutionPolicy(
-            string mode)
-        {
-            // there is no execution policy
-        }
-
         public Bam.Core.TokenizedString InputPath
         {
             get
             {
-                return this.GeneratedPaths[Key];
+                return this.GeneratedPaths[FlexSourceKey];
             }
             set
             {
-                this.GeneratedPaths[Key] = value;
+                this.RegisterGeneratedFile(
+                    FlexSourceKey,
+                    value
+                );
             }
         }
 

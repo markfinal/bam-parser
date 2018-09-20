@@ -58,6 +58,7 @@ namespace BisonTest1
             var bisonOutput = source.RunBison(bisonInput);
 
             // compiling flex source requires the header generated from bison
+            // TODO: this should really be automated
             flexOutput.Item1.Requires(bisonOutput.Item1);
 
             var enableDebugging = false;
@@ -94,7 +95,7 @@ namespace BisonTest1
                 bisonSettings.MacroDefinitionHeaderPath =
                     bisonGeneratedSource.CreateTokenizedString(
                         "@changeextension($(0),.tab.h)",
-                        bisonGeneratedSource.GeneratedPaths[bison.BisonGeneratedSource.Key]
+                        bisonGeneratedSource.GeneratedPaths[bison.BisonGeneratedSource.SourceFileKey]
                     );
             });
         }
