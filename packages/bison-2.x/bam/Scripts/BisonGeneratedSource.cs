@@ -129,7 +129,8 @@ namespace bison
                             out configuration,
                             XcodeBuilder.FileReference.EFileType.YaccFile,
                             true,
-                            false
+                            false,
+                            outputPaths: new Bam.Core.TokenizedStringArray(this.GeneratedPaths[SourceFileKey])
                         );
                     }
                     break;

@@ -139,7 +139,8 @@ namespace flex
                             out configuration,
                             XcodeBuilder.FileReference.EFileType.LexFile,
                             true,
-                            false
+                            false,
+                            outputPaths: new Bam.Core.TokenizedStringArray(this.GeneratedPaths[SourceFileKey])
                         );
                     }
                     break;
