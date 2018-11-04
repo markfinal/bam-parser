@@ -44,7 +44,7 @@ namespace flex
             this.Compiler = Bam.Core.Graph.Instance.FindReferencedModule<FlexTool>();
             this.Requires(this.Compiler);
             this.InputPath = this.CreateTokenizedString(
-                "$(encapsulatingbuilddir)/$(encapsulatedparentmodulename)/$(config)/@dir(@trimstart(@relativeto($(FlexSource),$(packagedir)),../))/lex.@changeextension(#valid($(FlexModuleName),@basename($(FlexSource))),.cpp)"
+                "$(encapsulatingbuilddir)/$(encapsulatedparentmodulename)/$(config)/@isrelative(@dir(@trimstart(@relativeto($(FlexSource),$(packagedir)),../)),.)/lex.@changeextension(#valid($(FlexModuleName),@basename($(FlexSource))),.cpp)"
             );
         }
 

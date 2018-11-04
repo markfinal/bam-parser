@@ -43,7 +43,9 @@ namespace bison
             base.Init(parent);
             this.Compiler = Bam.Core.Graph.Instance.FindReferencedModule<BisonTool>();
             this.Requires(this.Compiler);
-            this.InputPath = this.CreateTokenizedString("$(encapsulatingbuilddir)/$(encapsulatedparentmodulename)/$(config)/@changeextension(@trimstart(@relativeto($(BisonSource),$(packagedir)),../),.cpp)");
+            this.InputPath = this.CreateTokenizedString(
+                "$(encapsulatingbuilddir)/$(encapsulatedparentmodulename)/$(config)/@changeextension(@isrelative(@trimstart(@relativeto($(BisonSource),$(packagedir)),../),@filename($(BisonSource))),.cpp)"
+            );
         }
 
         public BisonSourceFile Source
