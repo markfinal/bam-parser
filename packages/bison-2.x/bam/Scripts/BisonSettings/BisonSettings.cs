@@ -37,38 +37,19 @@ namespace bison
         IBisonSettings
     {
         public BisonSettings(
-            Bam.Core.Module module)
-        {
-            this.InitializeAllInterfaces(module, true, true);
-        }
+            Bam.Core.Module module) => this.InitializeAllInterfaces(module, true, true);
 
         [CommandLineProcessor.Path("-p")]
-        Bam.Core.TokenizedString IBisonSettings.Prefix
-        {
-            get;
-            set;
-        }
+        Bam.Core.TokenizedString IBisonSettings.Prefix { get; set; }
 
         [CommandLineProcessor.Bool("-d", "")] // // rather than --debug for maximum compatibility
-        bool IBisonSettings.Debug
-        {
-            get;
-            set;
-        }
+        bool IBisonSettings.Debug { get; set; }
 
         [CommandLineProcessor.Bool("-l", "")]
-        bool IBisonSettings.InsertLineDirectives
-        {
-            get;
-            set;
-        }
+        bool IBisonSettings.InsertLineDirectives { get; set; }
 
         [CommandLineProcessor.Path("--defines=")]
-        Bam.Core.TokenizedString IBisonSettings.MacroDefinitionHeaderPath
-        {
-            get;
-            set;
-        }
+        Bam.Core.TokenizedString IBisonSettings.MacroDefinitionHeaderPath { get; set; }
 
         public override void
         AssignFileLayout()

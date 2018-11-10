@@ -27,7 +27,6 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion // License
-using Bam.Core;
 namespace bison
 {
     public class BisonGeneratedSource :
@@ -123,12 +122,10 @@ namespace bison
 #if D_PACKAGE_XCODEBUILDER
                 case "Xcode":
                     {
-                        XcodeBuilder.Target target;
-                        XcodeBuilder.Configuration configuration;
                         XcodeBuilder.Support.AddPreBuildStepForCommandLineTool(
                             this,
-                            out target,
-                            out configuration,
+                            out XcodeBuilder.Target target,
+                            out XcodeBuilder.Configuration configuration,
                             XcodeBuilder.FileReference.EFileType.YaccFile,
                             true,
                             false,
@@ -157,7 +154,7 @@ namespace bison
         }
 
         Bam.Core.Module
-        ICloneModule.Clone(
+        Bam.Core.ICloneModule.Clone(
             Bam.Core.Module parent,
             Bam.Core.Module.PostInitDelegate postInitCB)
         {
