@@ -27,7 +27,6 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion // License
-using Bam.Core;
 namespace flex
 {
     [CommandLineProcessor.OutputPath(FlexGeneratedSource.SourceFileKey, "-o")]
@@ -37,31 +36,16 @@ namespace flex
         IFlexSettings
     {
         public FlexSettings(
-            Bam.Core.Module module)
-        {
-            this.InitializeAllInterfaces(module, true, true);
-        }
+            Bam.Core.Module module) => this.InitializeAllInterfaces(module, true, true);
 
         [CommandLineProcessor.Path("-P")]
-        Bam.Core.TokenizedString IFlexSettings.Prefix
-        {
-            get;
-            set;
-        }
+        Bam.Core.TokenizedString IFlexSettings.Prefix { get; set; }
 
         [CommandLineProcessor.Bool("-d", "")] // rather than --debug for maximum compatibility
-        bool IFlexSettings.Debug
-        {
-            get;
-            set;
-        }
+        bool IFlexSettings.Debug { get; set; }
 
         [CommandLineProcessor.Bool("-L", "")]
-        bool IFlexSettings.InsertLineDirectives
-        {
-            get;
-            set;
-        }
+        bool IFlexSettings.InsertLineDirectives { get; set; }
 
         public override void
         AssignFileLayout()

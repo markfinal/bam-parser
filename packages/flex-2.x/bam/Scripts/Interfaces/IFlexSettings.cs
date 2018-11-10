@@ -27,29 +27,14 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion // License
-using Bam.Core;
 namespace flex
 {
     [Bam.Core.SettingsExtensions(typeof(DefaultSettings.DefaultSettingsExtensions))]
     interface IFlexSettings :
         Bam.Core.ISettingsBase
     {
-        Bam.Core.TokenizedString Prefix
-        {
-            get;
-            set;
-        }
-
-        bool Debug
-        {
-            get;
-            set;
-        }
-
-        bool InsertLineDirectives
-        {
-            get;
-            set;
-        }
+        Bam.Core.TokenizedString Prefix { get; set; }
+        bool Debug { get; set; }
+        bool InsertLineDirectives { get; set; }
     }
 }

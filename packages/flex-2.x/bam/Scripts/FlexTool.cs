@@ -34,7 +34,7 @@ namespace flex
     class FlexTool :
         Bam.Core.PreBuiltTool
     {
-        private Bam.Core.TokenizedStringArray arguments = new Bam.Core.TokenizedStringArray();
+        private readonly Bam.Core.TokenizedStringArray arguments = new Bam.Core.TokenizedStringArray();
 
         protected override void
         Init(
@@ -45,7 +45,7 @@ namespace flex
                 this.Macros.Add("flexExe", Bam.Core.TokenizedString.CreateVerbatim(Bam.Core.OSUtilities.GetInstallLocation("xcrun").First()));
 
                 var clangMeta = Bam.Core.Graph.Instance.PackageMetaData<Clang.MetaData>("Clang");
-                this.arguments.Add(Bam.Core.TokenizedString.CreateVerbatim(System.String.Format("--sdk {0}", clangMeta.SDK)));
+                this.arguments.Add(Bam.Core.TokenizedString.CreateVerbatim($"--sdk {clangMeta.SDK}"));
                 this.arguments.Add("flex");
             }
             else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
@@ -73,25 +73,10 @@ namespace flex
         }
 
         public override Bam.Core.Settings
-        CreateDefaultSettings<T>(T module)
-        {
-            return new FlexSettings(module);
-        }
+        CreateDefaultSettings<T>(
+            T module) => new FlexSettings(module);
 
-        public override TokenizedString Executable
-        {
-            get
-            {
-                return this.Macros["flexExe"];
-            }
-        }
-
-        public override TokenizedStringArray InitialArguments
-        {
-            get
-            {
-                return this.arguments;
-            }
-        }
+        public override TokenizedString Executable => this.Macros["flexExe"];
+        public override TokenizedStringArray InitialArguments => this.arguments;
     }
 }

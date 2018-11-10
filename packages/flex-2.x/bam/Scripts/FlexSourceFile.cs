@@ -38,13 +38,6 @@ namespace flex
         public const string FlexSourceKey = "Flex source file";
 
         protected override void
-        Init(
-            Bam.Core.Module parent)
-        {
-            base.Init(parent);
-        }
-
-        protected override void
         EvaluateInternal()
         {
             this.ReasonToExecute = null;
@@ -53,8 +46,7 @@ namespace flex
         protected override void
         ExecuteInternal(
             Bam.Core.ExecutionContext context)
-        {
-        }
+        {}
 
         public Bam.Core.TokenizedString InputPath
         {
@@ -71,10 +63,6 @@ namespace flex
             }
         }
 
-        Bam.Core.Module Bam.Core.IChildModule.Parent
-        {
-            get;
-            set;
-        }
+        Bam.Core.Module Bam.Core.IChildModule.Parent { get; set; }
     }
 }
