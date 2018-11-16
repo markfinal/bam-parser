@@ -52,7 +52,7 @@ namespace bison
                 this.Macros.Add("bisonExe", Bam.Core.TokenizedString.CreateVerbatim(Bam.Core.OSUtilities.GetInstallLocation("xcrun").First()));
 
                 var clangMeta = Bam.Core.Graph.Instance.PackageMetaData<Clang.MetaData>("Clang");
-                this.arguments.Add(Bam.Core.TokenizedString.CreateVerbatim(System.String.Format("--sdk {0}", clangMeta.SDK)));
+                this.arguments.Add(Bam.Core.TokenizedString.CreateVerbatim($"--sdk {clangMeta.SDK}"));
                 this.arguments.Add("bison");
             }
             else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
@@ -74,25 +74,10 @@ namespace bison
         }
 
         public override Bam.Core.Settings
-        CreateDefaultSettings<T>(T module)
-        {
-            return new BisonSettings(module);
-        }
+        CreateDefaultSettings<T>(
+            T module) => new BisonSettings(module);
 
-        public override TokenizedString Executable
-        {
-            get
-            {
-                return this.Macros["bisonExe"];
-            }
-        }
-
-        public override TokenizedStringArray InitialArguments
-        {
-            get
-            {
-                return this.arguments;
-            }
-        }
+        public override TokenizedString Executable => this.Macros["bisonExe"];
+        public override TokenizedStringArray InitialArguments => this.arguments;
     }
 }

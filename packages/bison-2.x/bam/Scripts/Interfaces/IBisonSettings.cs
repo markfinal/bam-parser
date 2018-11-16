@@ -34,28 +34,9 @@ namespace bison
     interface IBisonSettings :
         Bam.Core.ISettingsBase
     {
-        Bam.Core.TokenizedString Prefix
-        {
-            get;
-            set;
-        }
-
-        bool Debug
-        {
-            get;
-            set;
-        }
-
-        bool InsertLineDirectives
-        {
-            get;
-            set;
-        }
-
-        Bam.Core.TokenizedString MacroDefinitionHeaderPath
-        {
-            get;
-            set;
-        }
+        Bam.Core.TokenizedString Prefix { get; set; }
+        bool Debug { get; set; }
+        bool InsertLineDirectives { get; set; }
+        Bam.Core.TokenizedString MacroDefinitionHeaderPath { get; set; }
     }
 }
