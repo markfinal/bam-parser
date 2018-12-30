@@ -48,8 +48,8 @@ namespace flex.FlexExtension
 
             collection.PrivatePatch(settings =>
                 {
-                    var compiler = settings as C.ICommonCompilerSettings;
-                    compiler.IncludePaths.AddUnique(
+                    var preprocessor = settings as C.ICommonPreprocessorSettings;
+                    preprocessor.IncludePaths.AddUnique(
                         collection.CreateTokenizedString(
                             "@dir($(0))",
                             objFile.GeneratedPaths[C.ObjectFile.ObjectFileKey]
@@ -63,8 +63,8 @@ namespace flex.FlexExtension
                 var flexTool = Bam.Core.Graph.Instance.FindReferencedModule<flex.FlexTool>();
                 collection.PrivatePatch(settings =>
                     {
-                        var compiler = settings as C.ICommonCompilerSettings;
-                        compiler.IncludePaths.AddUnique(
+                        var preprocessor = settings as C.ICommonPreprocessorSettings;
+                        preprocessor.IncludePaths.AddUnique(
                             collection.CreateTokenizedString(
                                 "$(0)/include",
                                 flexTool.Macros["packagedir"]
