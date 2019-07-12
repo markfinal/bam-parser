@@ -4,13 +4,14 @@
   <Dependents>
     <Package name="bison" version="2.x" />
     <Package name="C" />
+    <Package name="Clang" version="Xcode10" />
+    <Package name="Clang" version="Xcode11" />
     <Package name="Clang" version="Xcode4" />
     <Package name="Clang" version="Xcode5" />
     <Package name="Clang" version="Xcode6" />
     <Package name="Clang" version="Xcode7" />
     <Package name="Clang" version="Xcode8" default="true" />
     <Package name="Clang" version="Xcode9" />
-    <Package name="Clang" version="Xcode10" />
     <Package name="flex" version="2.x" />
     <Package name="Gcc" version="4.8" default="true" />
     <Package name="Gcc" version="5" />
