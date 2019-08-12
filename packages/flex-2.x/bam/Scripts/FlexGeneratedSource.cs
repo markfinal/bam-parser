@@ -41,10 +41,15 @@ namespace flex
             Bam.Core.Module parent)
         {
             base.Init(parent);
-            this.Compiler = Bam.Core.Graph.Instance.FindReferencedModule<FlexTool>();
+
+            var graph = Bam.Core.Graph.Instance;
+            this.Compiler = graph.FindReferencedModule<FlexTool>();
             this.Requires(this.Compiler);
+
+            var encapsulatingParentModule = graph.ModuleStack.Peek();
             this.InputPath = this.CreateTokenizedString(
-                "$(encapsulatingbuilddir)/$(encapsulatedparentmodulename)/$(config)/@isrelative(@dir(@trimstart(@relativeto($(FlexSource),$(packagedir)),../)),.)/lex.@changeextension(#valid($(FlexModuleName),@basename($(FlexSource))),.cpp)"
+                "$(encapsulatingbuilddir)/$(0)/$(config)/@isrelative(@dir(@trimstart(@relativeto($(FlexSource),$(packagedir)),../)),.)/lex.@changeextension(#valid($(FlexModuleName),@basename($(FlexSource))),.cpp)",
+                encapsulatingParentModule.Macros["modulename"]
             );
         }
 

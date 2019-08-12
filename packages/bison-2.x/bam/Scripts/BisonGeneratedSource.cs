@@ -40,10 +40,15 @@ namespace bison
             Bam.Core.Module parent)
         {
             base.Init(parent);
-            this.Compiler = Bam.Core.Graph.Instance.FindReferencedModule<BisonTool>();
+
+            var graph = Bam.Core.Graph.Instance;
+            this.Compiler = graph.FindReferencedModule<BisonTool>();
             this.Requires(this.Compiler);
+
+            var encapsulatingParentModule = graph.ModuleStack.Peek();
             this.InputPath = this.CreateTokenizedString(
-                "$(encapsulatingbuilddir)/$(encapsulatedparentmodulename)/$(config)/@changeextension(@isrelative(@trimstart(@relativeto($(BisonSource),$(packagedir)),../),@filename($(BisonSource))),.cpp)"
+                "$(encapsulatingbuilddir)/$(0)/$(config)/@changeextension(@isrelative(@trimstart(@relativeto($(BisonSource),$(packagedir)),../),@filename($(BisonSource))),.cpp)",
+                encapsulatingParentModule.Macros["modulename"]
             );
         }
 
