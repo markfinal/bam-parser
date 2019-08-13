@@ -48,7 +48,8 @@ namespace flex
 
             var encapsulatingParentModule = graph.ModuleStack.Peek();
             this.InputPath = this.CreateTokenizedString(
-                "$(encapsulatingbuilddir)/$(0)/$(config)/@isrelative(@dir(@trimstart(@relativeto($(FlexSource),$(packagedir)),../)),.)/lex.@changeextension(#valid($(FlexModuleName),@basename($(FlexSource))),.cpp)",
+                "$(0)/$(1)/$(config)/@isrelative(@dir(@trimstart(@relativeto($(FlexSource),$(packagedir)),../)),.)/lex.@changeextension(#valid($(FlexModuleName),@basename($(FlexSource))),.cpp)",
+                encapsulatingParentModule.Macros["packagebuilddir"],
                 encapsulatingParentModule.Macros["modulename"]
             );
         }

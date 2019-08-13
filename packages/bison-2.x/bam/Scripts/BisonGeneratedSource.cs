@@ -47,7 +47,8 @@ namespace bison
 
             var encapsulatingParentModule = graph.ModuleStack.Peek();
             this.InputPath = this.CreateTokenizedString(
-                "$(encapsulatingbuilddir)/$(0)/$(config)/@changeextension(@isrelative(@trimstart(@relativeto($(BisonSource),$(packagedir)),../),@filename($(BisonSource))),.cpp)",
+                "$(0)/$(1)/$(config)/@changeextension(@isrelative(@trimstart(@relativeto($(BisonSource),$(packagedir)),../),@filename($(BisonSource))),.cpp)",
+                encapsulatingParentModule.Macros["packagebuilddir"],
                 encapsulatingParentModule.Macros["modulename"]
             );
         }
