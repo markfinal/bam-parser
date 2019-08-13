@@ -37,10 +37,9 @@ namespace BisonTest1
         C.Cxx.ConsoleApplication
     {
         protected override void
-        Init(
-            Bam.Core.Module parent)
+        Init()
         {
-            base.Init(parent);
+            base.Init();
 
             // specify the input .l file
             var flexInput = Bam.Core.Module.Create<flex.FlexSourceFile>();

@@ -34,10 +34,9 @@ namespace regex
         C.StaticLibrary
     {
         protected override void
-        Init(
-            Bam.Core.Module parent)
+        Init()
         {
-            base.Init(parent);
+            base.Init();
 
             this.CreateHeaderContainer("$(packagedir)/src/regex/2.7/regex-2.7-src/src/*.h");
             var source = this.CreateCSourceContainer("$(packagedir)/src/regex/2.7/regex-2.7-src/src/regex.c");

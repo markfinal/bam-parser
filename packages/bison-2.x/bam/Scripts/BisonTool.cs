@@ -37,8 +37,7 @@ namespace bison
         private Bam.Core.TokenizedStringArray arguments = new Bam.Core.TokenizedStringArray();
 
         protected override void
-        Init(
-            Bam.Core.Module parent)
+        Init()
         {
             if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
             {
@@ -70,7 +69,7 @@ namespace bison
             }
             // since the bisonExe macro is needed to evaluate the Executable property
             // in the check for existence
-            base.Init(parent);
+            base.Init();
         }
 
         public override Bam.Core.Settings

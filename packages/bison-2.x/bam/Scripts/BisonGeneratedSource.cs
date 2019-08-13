@@ -36,10 +36,9 @@ namespace bison
         private BisonSourceFile SourceModule;
 
         protected override void
-        Init(
-            Bam.Core.Module parent)
+        Init()
         {
-            base.Init(parent);
+            base.Init();
 
             var graph = Bam.Core.Graph.Instance;
             this.Compiler = graph.FindReferencedModule<BisonTool>();
