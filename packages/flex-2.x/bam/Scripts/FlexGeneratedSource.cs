@@ -76,7 +76,6 @@ namespace flex
                 this.SourceModule = value;
                 this.DependsOn(value);
                 this.Macros.Add("FlexSource", value.InputPath);
-                this.GetEncapsulatingReferencedModule(); // or the path above won't be parsable prior to all modules having been created
             }
         }
 
