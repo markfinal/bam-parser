@@ -45,11 +45,11 @@ namespace flex
             this.Compiler = graph.FindReferencedModule<FlexTool>();
             this.Requires(this.Compiler);
 
-            var encapsulatingParentModule = graph.ModuleStack.Peek();
+            var parentModule = graph.ModuleStack.Peek();
             this.InputPath = this.CreateTokenizedString(
                 "$(0)/$(1)/$(config)/@isrelative(@dir(@trimstart(@relativeto($(FlexSource),$(packagedir)),../)),.)/lex.@changeextension(#valid($(FlexModuleName),@basename($(FlexSource))),.cpp)",
-                encapsulatingParentModule.Macros["packagebuilddir"],
-                encapsulatingParentModule.Macros["modulename"]
+                parentModule.Macros["packagebuilddir"],
+                parentModule.Macros["modulename"]
             );
         }
 

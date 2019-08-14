@@ -44,11 +44,11 @@ namespace bison
             this.Compiler = graph.FindReferencedModule<BisonTool>();
             this.Requires(this.Compiler);
 
-            var encapsulatingParentModule = graph.ModuleStack.Peek();
+            var parentModule = graph.ModuleStack.Peek();
             this.InputPath = this.CreateTokenizedString(
                 "$(0)/$(1)/$(config)/@changeextension(@isrelative(@trimstart(@relativeto($(BisonSource),$(packagedir)),../),@filename($(BisonSource))),.cpp)",
-                encapsulatingParentModule.Macros["packagebuilddir"],
-                encapsulatingParentModule.Macros["modulename"]
+                parentModule.Macros["packagebuilddir"],
+                parentModule.Macros["modulename"]
             );
         }
 
