@@ -67,7 +67,7 @@ namespace flex.FlexExtension
                         preprocessor.IncludePaths.AddUnique(
                             collection.CreateTokenizedString(
                                 "$(0)/include",
-                                flexTool.Macros["packagedir"]
+                                flexTool.Macros[Bam.Core.ModuleMacroNames.PackageDirectory]
                             )
                         );
                     });
