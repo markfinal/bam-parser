@@ -72,9 +72,10 @@ namespace bison
             base.Init();
         }
 
-        public override Bam.Core.Settings
-        CreateDefaultSettings<T>(
-            T module) => new BisonSettings(module);
+        /// <summary>
+        /// \copydoc Bam.Core.ITool.SettingsType
+        /// </summary>
+        public override System.Type SettingsType => typeof(BisonSettings);
 
         public override TokenizedString Executable => this.Macros["bisonExe"];
         public override TokenizedStringArray InitialArguments => this.arguments;

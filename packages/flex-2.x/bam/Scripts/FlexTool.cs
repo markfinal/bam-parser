@@ -71,9 +71,10 @@ namespace flex
             base.Init();
         }
 
-        public override Bam.Core.Settings
-        CreateDefaultSettings<T>(
-            T module) => new FlexSettings(module);
+        /// <summary>
+        /// \copydoc Bam.Core.ITool.SettingsType
+        /// </summary>
+        public override System.Type SettingsType => typeof(FlexSettings);
 
         public override TokenizedString Executable => this.Macros["flexExe"];
         public override TokenizedStringArray InitialArguments => this.arguments;
