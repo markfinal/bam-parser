@@ -214,11 +214,11 @@ namespace flex
             return clone;
         }
 
-        public override System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, Bam.Core.Module>> InputModules
+        public override System.Collections.Generic.IEnumerable<(Bam.Core.Module module, string pathKey)> InputModulePaths
         {
             get
             {
-                yield return new System.Collections.Generic.KeyValuePair<string, Bam.Core.Module>(FlexSourceFile.FlexSourceKey, this.SourceModule);
+                yield return (this.SourceModule, FlexSourceFile.FlexSourceKey);
             }
         }
     }
