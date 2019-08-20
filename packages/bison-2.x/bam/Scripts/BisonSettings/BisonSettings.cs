@@ -37,7 +37,12 @@ namespace bison
         IBisonSettings
     {
         public BisonSettings(
-            Bam.Core.Module module) => this.InitializeAllInterfaces(module, true, true);
+            Bam.Core.Module module)
+            :
+            base(ELayout.Cmds_Outputs_Inputs)
+        {
+            this.InitializeAllInterfaces(module, true, true);
+        }
 
         [CommandLineProcessor.Path("-p")]
         Bam.Core.TokenizedString IBisonSettings.Prefix { get; set; }
@@ -50,11 +55,5 @@ namespace bison
 
         [CommandLineProcessor.Path("--defines=")]
         Bam.Core.TokenizedString IBisonSettings.MacroDefinitionHeaderPath { get; set; }
-
-        public override void
-        AssignFileLayout()
-        {
-            this.FileLayout = ELayout.Cmds_Outputs_Inputs;
-        }
     }
 }
