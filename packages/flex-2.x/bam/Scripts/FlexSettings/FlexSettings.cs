@@ -35,13 +35,10 @@ namespace flex
         Bam.Core.Settings,
         IFlexSettings
     {
-        public FlexSettings(
-            Bam.Core.Module module)
+        public FlexSettings()
             :
             base(ELayout.Cmds_Outputs_Inputs)
-        {
-            this.InitializeAllInterfaces(module, false, true);
-        }
+        {}
 
         [CommandLineProcessor.Path("-P")]
         Bam.Core.TokenizedString IFlexSettings.Prefix { get; set; }

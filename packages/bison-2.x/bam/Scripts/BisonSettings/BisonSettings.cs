@@ -36,13 +36,10 @@ namespace bison
         Bam.Core.Settings,
         IBisonSettings
     {
-        public BisonSettings(
-            Bam.Core.Module module)
+        public BisonSettings()
             :
             base(ELayout.Cmds_Outputs_Inputs)
-        {
-            this.InitializeAllInterfaces(module, false, true);
-        }
+        {}
 
         [CommandLineProcessor.Path("-p")]
         Bam.Core.TokenizedString IBisonSettings.Prefix { get; set; }
