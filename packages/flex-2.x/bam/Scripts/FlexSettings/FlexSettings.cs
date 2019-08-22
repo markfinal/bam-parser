@@ -40,7 +40,7 @@ namespace flex
             :
             base(ELayout.Cmds_Outputs_Inputs)
         {
-            this.InitializeAllInterfaces(module, true, true);
+            this.InitializeAllInterfaces(module, false, true);
         }
 
         [CommandLineProcessor.Path("-P")]
