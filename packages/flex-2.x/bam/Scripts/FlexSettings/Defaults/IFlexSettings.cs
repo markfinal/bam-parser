@@ -33,8 +33,7 @@ namespace flex.DefaultSettings
     {
         public static void
         Defaults(
-            this IFlexSettings settings,
-            Bam.Core.Module module)
+            this IFlexSettings settings)
         {
             settings.Prefix = null;
             settings.Debug = false;
