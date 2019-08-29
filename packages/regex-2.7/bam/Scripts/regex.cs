@@ -38,8 +38,8 @@ namespace regex
         {
             base.Init();
 
-            this.CreateHeaderContainer("$(packagedir)/src/regex/2.7/regex-2.7-src/src/*.h");
-            var source = this.CreateCSourceContainer("$(packagedir)/src/regex/2.7/regex-2.7-src/src/regex.c");
+            this.CreateHeaderCollection("$(packagedir)/src/regex/2.7/regex-2.7-src/src/*.h");
+            var source = this.CreateCSourceCollection("$(packagedir)/src/regex/2.7/regex-2.7-src/src/regex.c");
 
             this.PublicPatch((settings, appliedTo) =>
                 {

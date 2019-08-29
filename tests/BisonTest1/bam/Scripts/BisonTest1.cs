@@ -49,7 +49,7 @@ namespace BisonTest1
             var bisonInput = Bam.Core.Module.Create<bison.BisonSourceFile>();
             bisonInput.InputPath = this.CreateTokenizedString("$(packagedir)/source/calc.y");
 
-            var source = this.CreateCxxSourceContainer();
+            var source = this.CreateCxxSourceCollection();
             // generate the .cpp (and .obj) from running flex, and add it to the container of sources for this app
             var flexOutput = source.RunFlex(flexInput, Bam.Core.TokenizedString.CreateVerbatim("yy"), true);
 

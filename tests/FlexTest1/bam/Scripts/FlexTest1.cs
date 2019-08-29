@@ -43,7 +43,7 @@ namespace FlexTest1
             var flexInput = Bam.Core.Module.Create<flex.FlexSourceFile>();
             flexInput.InputPath = this.CreateTokenizedString("$(packagedir)/source/scanner.l");
 
-            var source = this.CreateCxxSourceContainer();
+            var source = this.CreateCxxSourceCollection();
             // generate the .cpp (and .obj) from running flex, and add it to the container of sources for this app
             var flexOutput = source.RunFlex(flexInput, Bam.Core.TokenizedString.CreateVerbatim("yy"), true);
 
