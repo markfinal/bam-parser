@@ -30,7 +30,7 @@
 using Bam.Core;
 namespace flex
 {
-    public class FlexSourceFile :
+    class FlexSourceFile :
         Bam.Core.Module,
         Bam.Core.IInputPath,
         Bam.Core.IChildModule

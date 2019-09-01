@@ -29,7 +29,7 @@
 #endregion // License
 namespace bison.BisonExtension
 {
-    public static class BisonExtension
+    static class BisonExtension
     {
         public static System.Tuple<BisonGeneratedSource, C.Cxx.ObjectFile>
         RunBison(

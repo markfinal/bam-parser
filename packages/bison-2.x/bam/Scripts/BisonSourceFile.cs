@@ -29,7 +29,7 @@
 #endregion // License
 namespace bison
 {
-    public class BisonSourceFile :
+    class BisonSourceFile :
         Bam.Core.Module,
         Bam.Core.IInputPath,
         Bam.Core.IChildModule

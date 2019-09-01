@@ -30,7 +30,7 @@
 using Bam.Core;
 namespace flex
 {
-    public class FlexGeneratedSource :
+    class FlexGeneratedSource :
         C.SourceFile,
         Bam.Core.ICloneModule
     {

@@ -31,7 +31,7 @@ namespace flex
 {
     [CommandLineProcessor.OutputPath(FlexGeneratedSource.SourceFileKey, "-o")]
     [CommandLineProcessor.InputPaths(FlexSourceFile.FlexSourceKey, "")]
-    public sealed class FlexSettings :
+    sealed class FlexSettings :
         Bam.Core.Settings,
         IFlexSettings
     {

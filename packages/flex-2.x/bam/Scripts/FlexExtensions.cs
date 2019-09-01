@@ -30,7 +30,7 @@
 using Bam.Core;
 namespace flex.FlexExtension
 {
-    public static class FlexExtension
+    static class FlexExtension
     {
         public static System.Tuple<FlexGeneratedSource, C.Cxx.ObjectFile>
         RunFlex(

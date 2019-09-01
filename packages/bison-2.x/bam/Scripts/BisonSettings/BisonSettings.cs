@@ -32,7 +32,7 @@ namespace bison
 {
     [CommandLineProcessor.OutputPath(BisonGeneratedSource.SourceFileKey, "-o")]
     [CommandLineProcessor.InputPaths(BisonSourceFile.BisonSourceKey, "")]
-    public sealed class BisonSettings :
+    sealed class BisonSettings :
         Bam.Core.Settings,
         IBisonSettings
     {
